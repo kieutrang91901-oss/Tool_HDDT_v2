@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution
+build/
+dist/
+*.spec.bak
+*.egg-info/
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Data (auto-generated)
+data/*.db
+data/*.db-wal
+data/*.db-shm
+data/downloads/
+data/*.xlsx
+
+# Logs
+logs/*.log
+logs/*.log.*
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Test output
+tests/__pycache__/
+tests/fixtures/__pycache__/

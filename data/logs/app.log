@@ -1,0 +1,313 @@
+2026-03-29 11:01:50 | INFO     | __main__                  | ============================================================
+2026-03-29 11:01:50 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 11:01:50 | INFO     | __main__                  | ============================================================
+2026-03-29 11:01:50 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 11:01:50 | INFO     | __main__                  | Database initialized
+2026-03-29 11:01:50 | INFO     | __main__                  | Application started (Backend only mode)
+2026-03-29 11:02:13 | INFO     | __main__                  | ============================================================
+2026-03-29 11:02:13 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 11:02:13 | INFO     | __main__                  | ============================================================
+2026-03-29 11:02:13 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 11:02:13 | INFO     | __main__                  | Database initialized
+2026-03-29 11:02:13 | INFO     | __main__                  | Application started (Backend only mode)
+2026-03-29 11:02:43 | INFO     | __main__                  | ============================================================
+2026-03-29 11:02:43 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 11:02:43 | INFO     | __main__                  | ============================================================
+2026-03-29 11:02:43 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 11:02:43 | INFO     | __main__                  | Database initialized
+2026-03-29 11:02:43 | INFO     | __main__                  | Application started (Backend only mode)
+2026-03-29 14:29:26 | INFO     | __main__                  | ============================================================
+2026-03-29 14:29:26 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 14:29:26 | INFO     | __main__                  | ============================================================
+2026-03-29 14:29:31 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 14:29:31 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 14:29:54 | INFO     | __main__                  | ============================================================
+2026-03-29 14:29:54 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 14:29:54 | INFO     | __main__                  | ============================================================
+2026-03-29 14:29:56 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 14:29:56 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 14:30:19 | INFO     | __main__                  | ============================================================
+2026-03-29 14:30:19 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 14:30:19 | INFO     | __main__                  | ============================================================
+2026-03-29 14:30:23 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 14:30:23 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 14:30:25 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 14:30:26 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 14:48:19 | INFO     | __main__                  | ============================================================
+2026-03-29 14:48:19 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 14:48:19 | INFO     | __main__                  | ============================================================
+2026-03-29 14:48:21 | INFO     | app.models.db_handler     | Database initialized: d:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 14:48:21 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 14:48:23 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 14:48:25 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 14:49:00 | INFO     | __main__                  | ============================================================
+2026-03-29 14:49:00 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 14:49:00 | INFO     | __main__                  | ============================================================
+2026-03-29 14:49:02 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 14:49:02 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 14:49:04 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 14:49:05 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 14:57:49 | INFO     | main                      | ============================================================
+2026-03-29 14:57:49 | INFO     | main                      | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 14:57:49 | INFO     | main                      | ============================================================
+2026-03-29 14:57:50 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 14:57:50 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 14:57:52 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 14:57:54 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 14:58:32 | INFO     | app.ui.main_window        | Application closed
+2026-03-29 14:59:07 | INFO     | main                      | ============================================================
+2026-03-29 14:59:07 | INFO     | main                      | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 14:59:07 | INFO     | main                      | ============================================================
+2026-03-29 14:59:09 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 14:59:09 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 14:59:11 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 14:59:12 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 14:59:44 | INFO     | main                      | ============================================================
+2026-03-29 14:59:44 | INFO     | main                      | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 14:59:44 | INFO     | main                      | ============================================================
+2026-03-29 14:59:45 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 14:59:45 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 14:59:47 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 15:03:31 | INFO     | app.ui.main_window        | Application closed
+2026-03-29 15:03:31 | INFO     | app.ui.main_window        | Application closed
+2026-03-29 15:03:31 | INFO     | app.ui.main_window        | Application closed
+2026-03-29 16:10:06 | INFO     | __main__                  | ============================================================
+2026-03-29 16:10:06 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 16:10:06 | INFO     | __main__                  | ============================================================
+2026-03-29 16:10:09 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 16:10:09 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 16:10:10 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 16:10:12 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 16:11:47 | INFO     | __main__                  | ============================================================
+2026-03-29 16:11:47 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 16:11:47 | INFO     | __main__                  | ============================================================
+2026-03-29 16:11:49 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 16:11:49 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 16:11:51 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 16:11:52 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 16:12:46 | INFO     | __main__                  | ============================================================
+2026-03-29 16:12:46 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 16:12:46 | INFO     | __main__                  | ============================================================
+2026-03-29 16:12:47 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 16:12:47 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 16:12:47 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 16:12:48 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 16:13:11 | INFO     | app.ui.main_window        | Application closed
+2026-03-29 16:15:58 | INFO     | app.models.db_handler     | Database initialized: d:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 16:15:58 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 16:16:34 | INFO     | __main__                  | ============================================================
+2026-03-29 16:16:34 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 16:16:34 | INFO     | __main__                  | Python: 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]
+2026-03-29 16:16:34 | INFO     | __main__                  | CWD: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2
+2026-03-29 16:16:34 | INFO     | __main__                  | ============================================================
+2026-03-29 16:16:35 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 16:16:35 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 16:16:36 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 16:16:37 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 16:18:02 | INFO     | __main__                  | ============================================================
+2026-03-29 16:18:02 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 16:18:02 | INFO     | __main__                  | Python: 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]
+2026-03-29 16:18:02 | INFO     | __main__                  | CWD: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2
+2026-03-29 16:18:02 | INFO     | __main__                  | ============================================================
+2026-03-29 16:18:03 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 16:18:03 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 16:18:04 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 16:18:05 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 16:18:14 | INFO     | app.ui.main_window        | Application closed
+2026-03-29 16:18:33 | INFO     | __main__                  | ============================================================
+2026-03-29 16:18:33 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 16:18:33 | INFO     | __main__                  | Python: 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]
+2026-03-29 16:18:33 | INFO     | __main__                  | CWD: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2
+2026-03-29 16:18:33 | INFO     | __main__                  | ============================================================
+2026-03-29 16:18:34 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 16:18:34 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 16:18:34 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 16:18:35 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 16:18:59 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\1308
+2026-03-29 16:18:59 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/1308.zip
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\1309
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/1309.zip
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\13795
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/13795.zip
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\4034
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/4034.zip
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\655982
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/655982.zip
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699472
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699472.zip
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699474
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699474.zip
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699475
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699475.zip
+2026-03-29 16:19:00 | INFO     | app.models.file_handler   | Total XML files to process: 8
+2026-03-29 16:19:00 | INFO     | app.models.xml_parser     | Starting batch parse: 8 files, 8 workers
+2026-03-29 16:19:00 | INFO     | app.models.xml_parser     | Batch parse complete: 8 files, 65 unique fields discovered
+2026-03-29 16:19:00 | INFO     | app.services.invoice_parser_service | Auto-discovery: 65 unique fields registered from 8 files
+2026-03-29 16:21:23 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-03-29 16:21:25 | ERROR    | app.models.api_client     | Captcha fetch error: Incorrect padding
+2026-03-29 16:21:25 | WARNING  | app.services.auth_service | Captcha fetch failed: Incorrect padding
+2026-03-29 16:21:26 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-03-29 16:21:29 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-03-29 16:21:30 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-03-29 16:21:34 | INFO     | app.models.api_client     | API Client closed
+2026-03-29 16:21:34 | INFO     | app.ui.main_window        | Application closed
+2026-03-29 16:21:48 | INFO     | __main__                  | ============================================================
+2026-03-29 16:21:48 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 16:21:48 | INFO     | __main__                  | Python: 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]
+2026-03-29 16:21:48 | INFO     | __main__                  | CWD: d:\09. Python\05.DuAn\1.1.Tool_HDDT_v2
+2026-03-29 16:21:48 | INFO     | __main__                  | ============================================================
+2026-03-29 16:21:49 | INFO     | app.models.db_handler     | Database initialized: d:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 16:21:49 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 16:21:50 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 16:21:51 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 16:21:52 | INFO     | app.ui.main_window        | Application closed
+2026-03-29 16:39:49 | INFO     | __main__                  | ============================================================
+2026-03-29 16:39:49 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 16:39:49 | INFO     | __main__                  | Python: 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]
+2026-03-29 16:39:49 | INFO     | __main__                  | CWD: d:\09. Python\05.DuAn\1.1.Tool_HDDT_v2
+2026-03-29 16:39:49 | INFO     | __main__                  | ============================================================
+2026-03-29 16:39:50 | INFO     | app.models.db_handler     | Database initialized: d:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 16:39:50 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 16:39:52 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 16:39:53 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 16:40:13 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\1308
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/1308.zip
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\1309
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/1309.zip
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\13795
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/13795.zip
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\4034
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/4034.zip
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\655982
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/655982.zip
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699472
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699472.zip
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699474
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699474.zip
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699475
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699475.zip
+2026-03-29 16:47:29 | INFO     | app.models.file_handler   | Total XML files to process: 8
+2026-03-29 16:47:29 | INFO     | app.models.xml_parser     | Starting batch parse: 8 files, 8 workers
+2026-03-29 16:47:30 | INFO     | app.models.xml_parser     | Batch parse complete: 8 files, 65 unique fields discovered
+2026-03-29 16:47:30 | INFO     | app.services.invoice_parser_service | Auto-discovery: 65 unique fields registered from 8 files
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\1308
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/1308.zip
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\1309
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/1309.zip
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\13795
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/13795.zip
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\4034
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/4034.zip
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\655982
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/655982.zip
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699472
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699472.zip
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699474
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699474.zip
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699475
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699475.zip
+2026-03-29 16:48:04 | INFO     | app.models.file_handler   | Total XML files to process: 8
+2026-03-29 16:48:04 | INFO     | app.models.xml_parser     | Starting batch parse: 8 files, 8 workers
+2026-03-29 16:48:04 | INFO     | app.models.xml_parser     | Batch parse complete: 8 files, 65 unique fields discovered
+2026-03-29 16:48:04 | INFO     | app.services.invoice_parser_service | Auto-discovery: 65 unique fields registered from 8 files
+2026-03-29 16:50:30 | INFO     | app.ui.main_window        | Application closed
+2026-03-29 16:54:27 | INFO     | __main__                  | ============================================================
+2026-03-29 16:54:27 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 16:54:27 | INFO     | __main__                  | Python: 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]
+2026-03-29 16:54:27 | INFO     | __main__                  | CWD: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2
+2026-03-29 16:54:27 | INFO     | __main__                  | ============================================================
+2026-03-29 16:54:28 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 16:54:28 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 16:54:30 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 16:54:30 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-03-29 16:54:30 | ERROR    | app.ui.views.login_view   | Captcha display error: cannot identify image file <_io.BytesIO object at 0x000002AF6A20DBC0>
+2026-03-29 16:54:31 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 16:57:55 | INFO     | __main__                  | ============================================================
+2026-03-29 16:57:55 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 16:57:55 | INFO     | __main__                  | Python: 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]
+2026-03-29 16:57:55 | INFO     | __main__                  | CWD: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2
+2026-03-29 16:57:55 | INFO     | __main__                  | ============================================================
+2026-03-29 16:57:56 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 16:57:56 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 16:57:58 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 16:57:58 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-03-29 16:57:59 | INFO     | app.ui.views.login_view   | No SVG renderer found (install svglib: pip install svglib)
+2026-03-29 16:57:59 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 17:02:34 | INFO     | __main__                  | ============================================================
+2026-03-29 17:02:34 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 17:02:34 | INFO     | __main__                  | Python: 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]
+2026-03-29 17:02:34 | INFO     | __main__                  | CWD: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2
+2026-03-29 17:02:34 | INFO     | __main__                  | ============================================================
+2026-03-29 17:02:35 | INFO     | app.models.db_handler     | Database initialized: D:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 17:02:35 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 17:02:37 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 17:02:37 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-03-29 17:02:38 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 17:04:26 | INFO     | __main__                  | ============================================================
+2026-03-29 17:04:26 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 17:04:26 | INFO     | __main__                  | Python: 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]
+2026-03-29 17:04:26 | INFO     | __main__                  | CWD: d:\09. Python\05.DuAn\1.1.Tool_HDDT_v2
+2026-03-29 17:04:26 | INFO     | __main__                  | ============================================================
+2026-03-29 17:04:27 | INFO     | app.models.db_handler     | Database initialized: d:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 17:04:27 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 17:04:29 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 17:04:29 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-03-29 17:04:30 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-03-29 17:04:32 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-03-29 17:04:33 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-03-29 17:04:48 | INFO     | app.models.api_client     | API Client closed
+2026-03-29 17:04:48 | INFO     | app.ui.main_window        | Application closed
+2026-03-29 17:08:35 | INFO     | __main__                  | ============================================================
+2026-03-29 17:08:35 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-03-29 17:08:35 | INFO     | __main__                  | Python: 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]
+2026-03-29 17:08:35 | INFO     | __main__                  | CWD: d:\09. Python\05.DuAn\1.1.Tool_HDDT_v2
+2026-03-29 17:08:35 | INFO     | __main__                  | ============================================================
+2026-03-29 17:08:36 | INFO     | app.models.db_handler     | Database initialized: d:\09. Python\05.DuAn\1.1.Tool_HDDT_v2\data\app.db
+2026-03-29 17:08:36 | INFO     | app.ui.main_window        | All services initialized
+2026-03-29 17:08:40 | INFO     | app.ui.main_window        | UI Main loop started
+2026-03-29 17:08:40 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-03-29 17:08:40 | WARNING  | app.services.remote_config_service | Remote config HTTP 503
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\1308
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/1308.zip
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\1309
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/1309.zip
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\13795
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/13795.zip
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\4034
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/4034.zip
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\655982
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/655982.zip
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699472
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699472.zip
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699474
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699474.zip
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699475
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699475.zip
+2026-03-29 17:08:53 | INFO     | app.models.file_handler   | Total XML files to process: 8
+2026-03-29 17:08:53 | INFO     | app.models.xml_parser     | Starting batch parse: 8 files, 8 workers
+2026-03-29 17:08:53 | INFO     | app.models.xml_parser     | Batch parse complete: 8 files, 65 unique fields discovered
+2026-03-29 17:08:53 | INFO     | app.services.invoice_parser_service | Auto-discovery: 65 unique fields registered from 8 files
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\1308
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/1308.zip
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\1309
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/1309.zip
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\13795
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/13795.zip
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\4034
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/4034.zip
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\655982
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/655982.zip
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699472
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699472.zip
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699474
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699474.zip
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Found 1 XML files in D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332\699475
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Extracted 1 XML files from D:/09. Python/05.DuAn/01.Tool_HDDT_v1/XML_20260327_222332/699475.zip
+2026-03-29 17:09:03 | INFO     | app.models.file_handler   | Total XML files to process: 8
+2026-03-29 17:09:03 | INFO     | app.models.xml_parser     | Starting batch parse: 8 files, 8 workers
+2026-03-29 17:09:03 | INFO     | app.models.xml_parser     | Batch parse complete: 8 files, 65 unique fields discovered
+2026-03-29 17:09:03 | INFO     | app.services.invoice_parser_service | Auto-discovery: 65 unique fields registered from 8 files
+2026-03-29 17:10:14 | INFO     | app.services.excel_export_service | Exported detail: 16 HĐ, 38 dòng hàng → C:/Users/User/Desktop/HDDT_ChiTiet.xlsx
+2026-03-29 17:11:43 | INFO     | app.models.api_client     | API Client closed
+2026-03-29 17:11:43 | INFO     | app.ui.main_window        | Application closed

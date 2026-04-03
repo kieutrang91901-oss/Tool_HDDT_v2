@@ -1,0 +1,30 @@
+# Tool HDDT v2 — Dependencies
+# Python 3.11+
+
+# UI Framework
+customtkinter>=5.2.0
+tksheet>=7.2.0
+
+# HTTP Client
+httpx>=0.27.0
+
+# XML Parser
+lxml>=5.0.0
+
+# Excel Export
+openpyxl>=3.1.0
+
+# Secure Credential Storage
+keyring>=25.0.0
+
+# Image Processing
+Pillow>=10.0.0
+
+# SVG Captcha Rendering
+tksvg>=0.7.0
+
+# OCR (optional — auto-fill captcha)
+# pytesseract>=0.3.10
+
+# Packaging (dev only)
+# pyinstaller>=6.0.0
