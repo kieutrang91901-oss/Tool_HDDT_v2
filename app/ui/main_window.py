@@ -2,8 +2,8 @@
 MainWindow — Cửa sổ chính của ứng dụng.
 
 Kiến trúc:
-- Sidebar navigation (trái)
-- Content area (phải) — chứa các views
+- Sidebar navigation (trái) — bao gồm nút Đăng nhập mở popup
+- Content area (phải) — chứa các views (không còn login_view)
 - Status bar (dưới)
 
 Quản lý tất cả shared services (DB, API, Parsers...).
@@ -65,12 +65,12 @@ class MainWindow(ctk.CTk):
         self._views: Dict[str, ctk.CTkFrame] = {}
         self._current_view: Optional[str] = None
         self._nav_buttons: Dict[str, ctk.CTkButton] = {}
+        self._login_popup = None  # Track login popup
 
         self._build_ui()
 
         # ── Hiện cửa sổ trên cùng ───────────────────
         self.update_idletasks()
-        # Center on screen
         sw = self.winfo_screenwidth()
         sh = self.winfo_screenheight()
         x = (sw - 1280) // 2
@@ -124,11 +124,28 @@ class MainWindow(ctk.CTk):
         # Separator
         ctk.CTkFrame(self._sidebar, height=1, fg_color=c["border"]).pack(fill="x", padx=12, pady=8)
 
-        # Nav buttons
+        # ── Login button (opens popup) ───────────────
+        self._login_btn = ctk.CTkButton(
+            self._sidebar,
+            text="🔑 Đăng nhập",
+            font=FONTS.get("body", ("Segoe UI", 13)),
+            fg_color=c["accent"],
+            hover_color=c["accent_hover"],
+            text_color="#ffffff",
+            anchor="w",
+            height=40,
+            corner_radius=8,
+            command=self._open_login_popup,
+        )
+        self._login_btn.pack(fill="x", padx=8, pady=(0, 4))
+
+        # Separator
+        ctk.CTkFrame(self._sidebar, height=1, fg_color=c["border"]).pack(fill="x", padx=12, pady=4)
+
+        # Nav buttons (without login)
         nav_items = [
-            ("login",        "Dang nhap",         "login_view"),
-            ("invoice_list", "Danh sach HD",      "invoice_list_view"),
-            ("settings",     "Cai dat",           "settings_view"),
+            ("invoice_list", "📋 Danh sách HĐ", "invoice_list_view"),
+            ("settings",     "⚙ Cài đặt",       "settings_view"),
         ]
 
         for key, text, view_name in nav_items:
@@ -147,44 +164,89 @@ class MainWindow(ctk.CTk):
             btn.pack(fill="x", padx=8, pady=2)
             self._nav_buttons[view_name] = btn
 
-        # Theme toggle — placed at bottom of sidebar using inner layout
-        # Use a container that fills remaining space, then anchor switch at bottom
+        # ── Login status indicator ───────────────────
+        self._login_status_frame = ctk.CTkFrame(self._sidebar, fg_color="transparent")
+        self._login_status_frame.pack(fill="x", padx=12, pady=(8, 0))
+
+        self._login_status_label = ctk.CTkLabel(
+            self._login_status_frame,
+            text="Chưa đăng nhập",
+            font=FONTS.get("caption", ("Segoe UI", 11)),
+            text_color=c["text_muted"],
+            wraplength=170,
+        )
+        self._login_status_label.pack(anchor="w")
+
+        # ── Bottom area: theme toggle + logout ───────
         bottom_container = ctk.CTkFrame(self._sidebar, fg_color="transparent")
         bottom_container.pack(fill="both", expand=True)
 
-        theme_frame = ctk.CTkFrame(bottom_container, fg_color="transparent")
-        theme_frame.pack(side="bottom", fill="x", padx=12, pady=12)
+        bottom_frame = ctk.CTkFrame(bottom_container, fg_color="transparent")
+        bottom_frame.pack(side="bottom", fill="x", padx=12, pady=12)
 
+        # Logout button (hidden initially)
+        self._logout_btn = ctk.CTkButton(
+            bottom_frame,
+            text="🚪 Đăng xuất",
+            font=FONTS.get("caption", ("Segoe UI", 11)),
+            fg_color="transparent",
+            hover_color=c["bg_tertiary"],
+            text_color=c["error"],
+            height=30, anchor="w",
+            command=self.on_logout,
+        )
+        # Don't pack yet — show after login
+
+        # Theme toggle
         self._theme_switch = ctk.CTkSwitch(
-            theme_frame,
+            bottom_frame,
             text="Dark Mode",
             font=FONTS.get("caption", ("Segoe UI", 11)),
             text_color=c["text_muted"],
             command=self._toggle_theme,
             progress_color=c["accent"],
         )
-        self._theme_switch.pack(anchor="w")
-        # Default: light mode (unchecked = light)
+        self._theme_switch.pack(anchor="w", pady=(4, 0))
 
         # ── Content Area ─────────────────────────────
         self._content = ctk.CTkFrame(self, fg_color=c["bg_primary"], corner_radius=0)
         self._content.pack(side="left", fill="both", expand=True)
 
-        # ── Init Views (lazy) ────────────────────────
+        # ── Init Views (lazy, no login view) ──────────
         self._init_views()
 
-        # Show login first
-        self.show_view("login_view")
+        # Show invoice list by default
+        self.show_view("invoice_list_view")
 
     def _init_views(self):
-        """Khởi tạo views (lazy loading)."""
-        from app.ui.views.login_view import LoginView
+        """Khởi tạo views (lazy loading) — login giờ là popup."""
         from app.ui.views.invoice_list_view import InvoiceListView
         from app.ui.views.settings_view import SettingsView
 
-        self._views["login_view"] = LoginView(self._content, self)
         self._views["invoice_list_view"] = InvoiceListView(self._content, self)
         self._views["settings_view"] = SettingsView(self._content, self)
+
+    # ═══════════════════════════════════════════════════════
+    # LOGIN POPUP
+    # ═══════════════════════════════════════════════════════
+
+    def _open_login_popup(self):
+        """Mở popup đăng nhập."""
+        if self._login_popup is not None:
+            try:
+                self._login_popup.focus_set()
+                return
+            except Exception:
+                self._login_popup = None
+
+        from app.ui.views.login_view import LoginPopup
+        self._login_popup = LoginPopup(self, self)
+
+        # Track when popup is closed
+        def _on_popup_close():
+            self._login_popup = None
+
+        self._login_popup.bind("<Destroy>", lambda e: _on_popup_close())
 
     # ═══════════════════════════════════════════════════════
     # NAVIGATION
@@ -239,6 +301,13 @@ class MainWindow(ctk.CTk):
 
         # Propagate theme to all views' DataTable instances
         for view_name, view in self._views.items():
+            # Summary table
+            if hasattr(view, '_summary_table') and hasattr(view._summary_table, 'refresh_theme'):
+                view._summary_table.refresh_theme()
+            # Detail table
+            if hasattr(view, '_detail_table') and hasattr(view._detail_table, 'refresh_theme'):
+                view._detail_table.refresh_theme()
+            # Legacy single _table
             if hasattr(view, '_table') and hasattr(view._table, 'refresh_theme'):
                 view._table.refresh_theme()
 
@@ -264,16 +333,45 @@ class MainWindow(ctk.CTk):
 
     def on_login_success(self, mst: str):
         """Callback khi đăng nhập thành công."""
+        c = self.colors
         self.status_bar.set_status(f"MST: {mst}", connected=True)
         show_toast(self, f"Đăng nhập thành công: {mst}", "success")
+
+        # Update sidebar login status
+        self._login_status_label.configure(
+            text=f"✅ {mst}",
+            text_color=c["success"],
+        )
+        self._login_btn.configure(
+            text=f"🔑 {mst[:10]}...",
+            fg_color=c["success"],
+            hover_color="#15803d",
+        )
+
+        # Show logout button
+        self._logout_btn.pack(anchor="w", pady=(0, 4))
+
+        # Show invoice view
         self.show_view("invoice_list_view")
 
     def on_logout(self):
         """Callback khi đăng xuất."""
+        c = self.colors
         self.auth_service.logout()
         self.status_bar.set_status("Chưa đăng nhập", connected=False)
         show_toast(self, "Đã đăng xuất", "info")
-        self.show_view("login_view")
+
+        # Reset sidebar
+        self._login_status_label.configure(
+            text="Chưa đăng nhập",
+            text_color=c["text_muted"],
+        )
+        self._login_btn.configure(
+            text="🔑 Đăng nhập",
+            fg_color=c["accent"],
+            hover_color=c["accent_hover"],
+        )
+        self._logout_btn.pack_forget()
 
     def _on_close(self):
         """Cleanup khi đóng app."""

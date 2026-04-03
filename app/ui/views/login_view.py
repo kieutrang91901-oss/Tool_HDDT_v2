@@ -1,95 +1,187 @@
 """
-LoginView — Màn hình đăng nhập + quản lý tài khoản.
+LoginView — Popup đăng nhập nhỏ gọn.
 
-- Dropdown chọn MST đã lưu
-- Captcha display + auto-fill (OCR)
-- Quản lý tài khoản (thêm/sửa/xóa)
+- CTkToplevel thay vì fullscreen frame
+- Tự đóng sau khi đăng nhập thành công
+- Captcha display + auto-fill (SVG Solver)
 """
 import customtkinter as ctk
 import threading
+import re
+import tkinter as tk
 from io import BytesIO
-from PIL import Image
-from typing import Optional
+from PIL import Image, ImageDraw
+from typing import Optional, List, Tuple
 
 from config.theme import get_colors, FONTS, SPACING
 from config.logger import get_logger
 from app.ui.components.toast import show_toast
+from app.services.captcha_solver import get_captcha_solver
 
 logger = get_logger(__name__)
 
 
-def _ocr_captcha(image_bytes: bytes) -> str:
-    """Nhận diện captcha đơn giản bằng Pillow + pytesseract hoặc fallback.
-    
-    Cổng thuế dùng captcha số đơn giản (4-6 chữ số/ký tự).
-    Thử dùng pytesseract nếu có, nếu không thì trả rỗng.
-    """
+def _solve_svg_captcha(svg_content: str) -> str:
+    """Giải captcha SVG bằng CaptchaSolver (pattern matching trên path commands)."""
     try:
-        import pytesseract
-        img = Image.open(BytesIO(image_bytes))
-
-        # Preprocessing: convert to grayscale, threshold
-        img = img.convert("L")  # Grayscale
-        img = img.point(lambda p: 255 if p > 128 else 0)  # Binary threshold
-
-        text = pytesseract.image_to_string(
-            img, config="--psm 7 -c tessedit_char_whitelist=0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        ).strip()
-
-        # Clean up: remove spaces and special chars
-        text = "".join(c for c in text if c.isalnum())
-        logger.info(f"OCR captcha result: {text}")
-        return text
-    except ImportError:
-        logger.debug("pytesseract not installed — manual captcha entry required")
-        return ""
+        solver = get_captcha_solver()
+        result = solver.solve(svg_content)
+        if result:
+            logger.info(f"SVG captcha solved: {result}")
+        else:
+            logger.warning("SVG captcha: no characters recognized")
+        return result
     except Exception as e:
-        logger.warning(f"OCR captcha failed: {e}")
+        logger.error(f"SVG captcha solver error: {e}")
         return ""
 
 
-class LoginView(ctk.CTkFrame):
-    """Màn hình đăng nhập cổng thuế."""
+def _svg_to_pil_image(svg_bytes: bytes, width: int = 160, height: int = 50) -> Optional[Image.Image]:
+    """Render SVG thành PIL Image bằng cách parse paths và vẽ lên canvas."""
+    try:
+        svg_text = svg_bytes.decode("utf-8", errors="replace")
+
+        vb_match = re.search(r'viewBox="([^"]+)"', svg_text)
+        if vb_match:
+            parts = vb_match.group(1).split()
+            if len(parts) == 4:
+                svg_w = float(parts[2])
+                svg_h = float(parts[3])
+            else:
+                svg_w, svg_h = 200, 70
+        else:
+            w_match = re.search(r'width="(\d+)"', svg_text)
+            h_match = re.search(r'height="(\d+)"', svg_text)
+            svg_w = float(w_match.group(1)) if w_match else 200
+            svg_h = float(h_match.group(1)) if h_match else 70
+
+        scale_x = width / svg_w
+        scale_y = height / svg_h
+        scale = min(scale_x, scale_y)
+
+        img = Image.new("RGB", (width, height), (255, 255, 255))
+        draw = ImageDraw.Draw(img)
+
+        paths = re.findall(r'd="([^"]+)"', svg_text)
+        fills = re.findall(r'fill="([^"]+)"', svg_text)
+
+        for idx, path_data in enumerate(paths):
+            fill_color = "#333333"
+            if idx < len(fills):
+                fc = fills[idx]
+                if fc and fc != "none" and not fc.startswith("url"):
+                    fill_color = fc
+
+            points = _parse_svg_path_to_points(path_data, scale)
+
+            if len(points) >= 2:
+                draw.line(points, fill=fill_color, width=2)
+
+        return img
+    except Exception as e:
+        logger.debug(f"SVG to PIL fallback rendering failed: {e}")
+        return None
+
+
+def _parse_svg_path_to_points(
+    path_data: str, scale: float
+) -> List[Tuple[float, float]]:
+    """Parse SVG path data (M, Q, Z commands) thành list tọa độ."""
+    points: List[Tuple[float, float]] = []
+    tokens = re.findall(r'([MmQqLlCcZz])([^MmQqLlCcZz]*)', path_data)
+
+    cx, cy = 0.0, 0.0
+    start_x, start_y = 0.0, 0.0
+
+    for cmd, args_str in tokens:
+        nums = [float(n) for n in re.findall(r'-?\d+(?:\.\d+)?', args_str)]
+
+        if cmd == 'M':
+            if len(nums) >= 2:
+                cx, cy = nums[0] * scale, nums[1] * scale
+                start_x, start_y = cx, cy
+                points.append((cx, cy))
+        elif cmd == 'Q':
+            i = 0
+            while i + 3 < len(nums):
+                cx = nums[i + 2] * scale
+                cy = nums[i + 3] * scale
+                points.append((cx, cy))
+                i += 4
+        elif cmd == 'L':
+            i = 0
+            while i + 1 < len(nums):
+                cx = nums[i] * scale
+                cy = nums[i + 1] * scale
+                points.append((cx, cy))
+                i += 2
+        elif cmd == 'Z' or cmd == 'z':
+            points.append((start_x, start_y))
+            cx, cy = start_x, start_y
+
+    return points
+
+
+class LoginPopup(ctk.CTkToplevel):
+    """Popup đăng nhập cổng thuế — nhỏ gọn, tự đóng sau khi login."""
 
     def __init__(self, parent, main_window, **kwargs):
-        colors = get_colors()
-        super().__init__(parent, fg_color=colors["bg_primary"], **kwargs)
+        super().__init__(parent, **kwargs)
         self.main = main_window
-        self.colors = colors
+        self.colors = get_colors()
         self._captcha_key = ""
+        self._is_destroyed = False
+
+        # ── Window config ─────────────────────────
+        self.title("Đăng nhập Cổng Thuế")
+        self.geometry("440x520")
+        self.resizable(False, False)
+        self.configure(fg_color=self.colors["bg_primary"])
+        self.transient(parent.winfo_toplevel())
+        self.grab_set()
+
+        # Prevent closing while logging in
+        self.protocol("WM_DELETE_WINDOW", self._on_close)
 
         self._build_ui()
         self._load_accounts()
 
-        # Auto-load captcha khi mở view
-        self.after(500, self._load_captcha)
+        # Center on parent
+        self._center()
+
+        # Auto-load captcha
+        self.after(300, self._load_captcha)
 
     def _build_ui(self):
         c = self.colors
 
-        # Center container
-        center = ctk.CTkFrame(self, fg_color="transparent", width=420)
-        center.place(relx=0.5, rely=0.45, anchor="center")
+        # ── Title area ───────────────────────────
+        title_frame = ctk.CTkFrame(self, fg_color=c["accent"], height=64, corner_radius=0)
+        title_frame.pack(fill="x")
+        title_frame.pack_propagate(False)
 
-        # Title
         ctk.CTkLabel(
-            center, text="Dang nhap Cong Thue",
-            font=("Inter", 22, "bold"), text_color=c["accent"],
-        ).pack(pady=(0, 4))
+            title_frame, text="🔑  Đăng nhập Cổng Thuế",
+            font=("Inter", 17, "bold"), text_color="#ffffff",
+        ).pack(side="left", padx=20)
         ctk.CTkLabel(
-            center, text="hoadondientu.gdt.gov.vn",
+            title_frame, text="hoadondientu.gdt.gov.vn",
             font=FONTS.get("caption", ("Segoe UI", 11)),
-            text_color=c["text_muted"],
-        ).pack(pady=(0, 24))
+            text_color="#c0c0c0",
+        ).pack(side="right", padx=20)
 
-        # Card
-        card = ctk.CTkFrame(center, fg_color=c["bg_secondary"], corner_radius=12, width=400)
-        card.pack(fill="x")
+        # ── Form (card) ──────────────────────────
+        card = ctk.CTkFrame(self, fg_color=c["bg_secondary"], corner_radius=12)
+        card.pack(fill="x", padx=16, pady=16)
 
         # MST dropdown
-        ctk.CTkLabel(card, text="Ma so thue", font=FONTS["body"], text_color=c["text_secondary"]).pack(anchor="w", padx=24, pady=(20, 4))
+        ctk.CTkLabel(
+            card, text="Mã số thuế",
+            font=FONTS["body"], text_color=c["text_secondary"],
+        ).pack(anchor="w", padx=20, pady=(16, 4))
+
         self._mst_combo = ctk.CTkComboBox(
-            card, values=[], width=352, height=36,
+            card, values=[], height=36,
             font=FONTS.get("mono", ("Consolas", 13)),
             fg_color=c["input_bg"], border_color=c["border"],
             button_color=c["accent"], button_hover_color=c["accent_hover"],
@@ -99,25 +191,28 @@ class LoginView(ctk.CTkFrame):
             dropdown_hover_color=c["bg_tertiary"],
             command=self._on_mst_select,
         )
-        self._mst_combo.pack(padx=24)
+        self._mst_combo.pack(fill="x", padx=20)
 
         # Password
-        ctk.CTkLabel(card, text="Mat khau", font=FONTS["body"], text_color=c["text_secondary"]).pack(anchor="w", padx=24, pady=(12, 4))
+        ctk.CTkLabel(
+            card, text="Mật khẩu",
+            font=FONTS["body"], text_color=c["text_secondary"],
+        ).pack(anchor="w", padx=20, pady=(12, 4))
+
         self._pw_entry = ctk.CTkEntry(
-            card, show="*", width=352, height=36,
+            card, show="*", height=36,
             font=FONTS.get("body", ("Segoe UI", 13)),
             fg_color=c["input_bg"], border_color=c["border"],
             text_color=c["text_primary"],
         )
-        self._pw_entry.pack(padx=24)
+        self._pw_entry.pack(fill="x", padx=20)
 
         # Captcha area
         captcha_frame = ctk.CTkFrame(card, fg_color="transparent")
-        captcha_frame.pack(fill="x", padx=24, pady=(16, 0))
+        captcha_frame.pack(fill="x", padx=20, pady=(14, 0))
 
-        # Captcha image
         self._captcha_label = ctk.CTkLabel(
-            captcha_frame, text="Dang tai captcha...",
+            captcha_frame, text="Đang tải captcha...",
             font=FONTS.get("caption", ("Segoe UI", 11)),
             text_color=c["text_muted"],
             width=160, height=50,
@@ -126,7 +221,6 @@ class LoginView(ctk.CTkFrame):
         self._captcha_label.pack(side="left")
         self._captcha_label.bind("<Button-1>", lambda e: self._load_captcha())
 
-        # Captcha input
         self._captcha_entry = ctk.CTkEntry(
             captcha_frame, placeholder_text="Captcha...",
             width=120, height=36,
@@ -136,10 +230,9 @@ class LoginView(ctk.CTkFrame):
         )
         self._captcha_entry.pack(side="left", padx=(8, 0))
 
-        # Refresh captcha button
         ctk.CTkButton(
-            captcha_frame, text="Lam moi", width=60, height=36,
-            font=("Segoe UI", 11),
+            captcha_frame, text="↻", width=36, height=36,
+            font=("Segoe UI", 16),
             fg_color=c["bg_tertiary"], hover_color=c["border"],
             text_color=c["text_primary"], corner_radius=6,
             command=self._load_captcha,
@@ -147,13 +240,13 @@ class LoginView(ctk.CTkFrame):
 
         # Login button
         self._login_btn = ctk.CTkButton(
-            card, text="Dang nhap", width=352, height=42,
+            card, text="Đăng nhập", height=42,
             font=FONTS.get("button", ("Segoe UI", 14, "bold")),
             fg_color=c["accent"], hover_color=c["accent_hover"],
             corner_radius=8,
             command=self._do_login,
         )
-        self._login_btn.pack(padx=24, pady=(20, 8))
+        self._login_btn.pack(fill="x", padx=20, pady=(16, 8))
         self._captcha_entry.bind("<Return>", lambda e: self._do_login())
 
         # Status
@@ -162,14 +255,14 @@ class LoginView(ctk.CTkFrame):
             font=FONTS.get("caption", ("Segoe UI", 11)),
             text_color=c["text_muted"],
         )
-        self._status.pack(pady=(0, 16))
+        self._status.pack(pady=(0, 12))
 
-        # Account management link
-        mgmt_frame = ctk.CTkFrame(center, fg_color="transparent")
-        mgmt_frame.pack(fill="x", pady=(16, 0))
+        # ── Account management ─────────────────────
+        mgmt_frame = ctk.CTkFrame(self, fg_color="transparent")
+        mgmt_frame.pack(fill="x", padx=16, pady=(0, 8))
 
         ctk.CTkButton(
-            mgmt_frame, text="+ Them tai khoan", width=130, height=30,
+            mgmt_frame, text="+ Thêm tài khoản", width=130, height=30,
             font=FONTS.get("caption", ("Segoe UI", 11)),
             fg_color="transparent", hover_color=c["bg_tertiary"],
             text_color=c["accent"],
@@ -177,7 +270,7 @@ class LoginView(ctk.CTkFrame):
         ).pack(side="left")
 
         ctk.CTkButton(
-            mgmt_frame, text="Xoa tai khoan", width=110, height=30,
+            mgmt_frame, text="Xóa tài khoản", width=110, height=30,
             font=FONTS.get("caption", ("Segoe UI", 11)),
             fg_color="transparent", hover_color=c["bg_tertiary"],
             text_color=c["error"],
@@ -217,11 +310,11 @@ class LoginView(ctk.CTkFrame):
             if mst:
                 self.main.account_service.add_account(mst, pw, ten)
                 self._load_accounts()
-                show_toast(self.main, f"Da them: {mst}", "success")
+                show_toast(self.main, f"Đã thêm: {mst}", "success")
 
         InputDialog(
-            self, title="Them tai khoan",
-            label="Nhap: MST, Ten CTY, Password (cach boi dau phay)",
+            self, title="Thêm tài khoản",
+            label="Nhập: MST, Tên CTY, Password (cách bởi dấu phẩy)",
             on_submit=_on_submit,
         )
 
@@ -231,114 +324,119 @@ class LoginView(ctk.CTkFrame):
             return
         from app.ui.components.dialog import ConfirmDialog
         ConfirmDialog(
-            self, title="Xoa tai khoan",
-            message=f"Ban co chac muon xoa tai khoan MST: {mst}?",
+            self, title="Xóa tài khoản",
+            message=f"Bạn có chắc muốn xóa tài khoản MST: {mst}?",
             on_confirm=lambda: self._do_delete(mst),
         )
 
     def _do_delete(self, mst):
         self.main.account_service.delete_account(mst)
         self._load_accounts()
-        show_toast(self.main, f"Da xoa: {mst}", "info")
+        show_toast(self.main, f"Đã xóa: {mst}", "info")
 
     # ═══════════════════════════════════════════════════════
     # CAPTCHA
     # ═══════════════════════════════════════════════════════
 
     def _load_captcha(self):
-        self._status.configure(text="Dang lay captcha...", text_color=self.colors["text_muted"])
+        if self._is_destroyed:
+            return
+        self._status.configure(text="Đang lấy captcha...", text_color=self.colors["text_muted"])
         self._captcha_entry.delete(0, "end")
 
         def _fetch():
             result = self.main.auth_service.get_captcha()
-            self.after(0, lambda: self._show_captcha(result))
+            if not self._is_destroyed:
+                self.after(0, lambda: self._show_captcha(result))
 
         threading.Thread(target=_fetch, daemon=True).start()
 
     def _show_captcha(self, result):
+        if self._is_destroyed:
+            return
         if result.success and result.image_bytes:
             try:
                 self._captcha_key = result.captcha_key
+                solved_text = ""
+                img = None
 
                 if getattr(result, 'content_type', '') == 'svg':
-                    # Try native SVG display first (no conversion needed)
+                    svg_content = result.image_bytes.decode("utf-8", errors="replace")
+                    solved_text = _solve_svg_captcha(svg_content)
+
                     if self._show_captcha_svg_native(result.image_bytes):
-                        self._status.configure(text="Nhap captcha roi dang nhap")
-                        self._captcha_entry.focus()
-                        return
-
-                    # Fallback: convert SVG to PIL Image
-                    img = self._svg_to_image(result.image_bytes)
+                        pass
+                    else:
+                        img = self._svg_to_image(result.image_bytes)
+                        if img:
+                            ctk_img = ctk.CTkImage(light_image=img, dark_image=img, size=(160, 50))
+                            self._captcha_label.configure(image=ctk_img, text="")
+                        else:
+                            img = _svg_to_pil_image(result.image_bytes)
+                            if img:
+                                ctk_img = ctk.CTkImage(light_image=img, dark_image=img, size=(160, 50))
+                                self._captcha_label.configure(image=ctk_img, text="")
+                            else:
+                                if solved_text:
+                                    self._captcha_label.configure(
+                                        text=f"[SVG] Đã giải: {solved_text}",
+                                        image=None,
+                                    )
+                                else:
+                                    self._captcha_label.configure(
+                                        text="[SVG Captcha - nhập thủ công]",
+                                        image=None,
+                                    )
                 else:
-                    # Binary image (PNG/JPEG)
                     img = Image.open(BytesIO(result.image_bytes))
+                    if img:
+                        ctk_img = ctk.CTkImage(light_image=img, dark_image=img, size=(160, 50))
+                        self._captcha_label.configure(image=ctk_img, text="")
 
-                if img:
-                    ctk_img = ctk.CTkImage(light_image=img, dark_image=img, size=(160, 50))
-                    self._captcha_label.configure(image=ctk_img, text="")
-                else:
-                    self._captcha_label.configure(text="[Captcha - nhap thu cong]", image=None)
+                if solved_text:
+                    self._captcha_entry.delete(0, "end")
+                    self._captcha_entry.insert(0, solved_text)
+                    self._status.configure(
+                        text=f"✅ Captcha tự động: {solved_text}",
+                        text_color=self.colors["success"],
+                    )
+                    logger.info(f"Captcha auto-filled: {solved_text}")
+                    self._captcha_entry.focus()
+                    return
 
-                # Auto-fill captcha via OCR (only for raster images)
-                if img and getattr(result, 'content_type', '') != 'svg':
-                    buf = BytesIO()
-                    img.save(buf, format="PNG")
-                    ocr_text = _ocr_captcha(buf.getvalue())
-                    if ocr_text:
-                        self._captcha_entry.delete(0, "end")
-                        self._captcha_entry.insert(0, ocr_text)
-                        self._status.configure(
-                            text=f"Captcha tu dong: {ocr_text}",
-                            text_color=self.colors["success"],
-                        )
-                        return
-
-                self._status.configure(text="Nhap captcha roi dang nhap")
+                self._status.configure(text="Nhập captcha rồi đăng nhập")
                 self._captcha_entry.focus()
             except Exception as e:
-                self._status.configure(text=f"Loi hien thi captcha: {e}")
+                self._status.configure(text=f"Lỗi hiển thị captcha: {e}")
                 logger.error(f"Captcha display error: {e}")
         else:
-            err_msg = result.error_msg or "Khong ket noi duoc cong thue"
-            self._status.configure(text=f"Loi: {err_msg}", text_color=self.colors["warning"])
-            self._captcha_label.configure(text="Nhan de thu lai", image=None)
+            err_msg = result.error_msg or "Không kết nối được cổng thuế"
+            self._status.configure(text=f"Lỗi: {err_msg}", text_color=self.colors["warning"])
+            self._captcha_label.configure(text="Nhấn để thử lại", image=None)
 
     def _svg_to_image(self, svg_bytes: bytes) -> Optional[Image.Image]:
         """Chuyển SVG bytes sang PIL Image."""
-        # Method 1: tksvg — native tkinter SVG support
         try:
             import tksvg
             import tkinter as tk
 
             svg_data = svg_bytes.decode("utf-8")
-            # Tạo PhotoImage từ SVG data
             photo = tksvg.SvgImage(data=svg_data, scaletowidth=200)
-
-            # Convert tkinter PhotoImage -> PIL Image
             width = photo.width()
             height = photo.height()
-            # Use a temporary hidden canvas to render
             canvas = tk.Canvas(self, width=width, height=height)
             canvas.create_image(0, 0, anchor="nw", image=photo)
             canvas.update_idletasks()
-
-            # Get pixels via postscript (fallback: use PhotoImage directly)
-            # Store reference to prevent garbage collection
             self._captcha_photo = photo
-
-            # Instead of converting, use CTkImage from tkinter PhotoImage directly
             img = Image.new("RGBA", (width, height), (255, 255, 255, 255))
-            # tksvg doesn't easily provide pixel data, so we use a workaround:
-            # Create PIL image from the raw data string
             try:
-                data = photo.data  # type: ignore
+                data = photo.data
                 if data:
                     import base64 as b64mod
                     png_data = b64mod.b64decode(data)
                     img = Image.open(BytesIO(png_data))
             except Exception:
                 pass
-
             canvas.destroy()
             return img
         except ImportError:
@@ -346,7 +444,6 @@ class LoginView(ctk.CTkFrame):
         except Exception as e:
             logger.debug(f"tksvg render failed: {e}")
 
-        # Method 2: cairosvg
         try:
             import cairosvg
             png_data = cairosvg.svg2png(bytestring=svg_bytes, output_width=200, output_height=50)
@@ -360,12 +457,12 @@ class LoginView(ctk.CTkFrame):
         return None
 
     def _show_captcha_svg_native(self, svg_bytes: bytes):
-        """Hiển thị SVG captcha trực tiếp qua tksvg (no PIL conversion)."""
+        """Hiển thị SVG captcha trực tiếp qua tksvg."""
         try:
             import tksvg
             svg_data = svg_bytes.decode("utf-8")
             photo = tksvg.SvgImage(data=svg_data, scaletowidth=160, scaletoheight=50)
-            self._captcha_photo = photo  # Prevent GC
+            self._captcha_photo = photo
             self._captcha_label.configure(image=photo, text="")
             return True
         except Exception as e:
@@ -382,33 +479,67 @@ class LoginView(ctk.CTkFrame):
         captcha = self._captcha_entry.get().strip()
 
         if not mst:
-            self._status.configure(text="Vui long chon MST", text_color=self.colors["error"])
+            self._status.configure(text="Vui lòng chọn MST", text_color=self.colors["error"])
             return
         if not password:
-            self._status.configure(text="Vui long nhap mat khau", text_color=self.colors["error"])
+            self._status.configure(text="Vui lòng nhập mật khẩu", text_color=self.colors["error"])
             return
         if not captcha:
-            self._status.configure(text="Vui long nhap captcha", text_color=self.colors["error"])
+            self._status.configure(text="Vui lòng nhập captcha", text_color=self.colors["error"])
             return
 
-        self._login_btn.configure(state="disabled", text="Dang dang nhap...")
-        self._status.configure(text="Dang ket noi...", text_color=self.colors["text_muted"])
+        self._login_btn.configure(state="disabled", text="Đang đăng nhập...")
+        self._status.configure(text="Đang kết nối...", text_color=self.colors["text_muted"])
 
         def _login_thread():
             result = self.main.auth_service.login(mst, password, captcha, self._captcha_key)
-            self.after(0, lambda: self._on_login_result(result, mst, password))
+            if not self._is_destroyed:
+                self.after(0, lambda: self._on_login_result(result, mst, password))
 
         threading.Thread(target=_login_thread, daemon=True).start()
 
     def _on_login_result(self, result, mst, password):
-        self._login_btn.configure(state="normal", text="Dang nhap")
+        if self._is_destroyed:
+            return
+        self._login_btn.configure(state="normal", text="Đăng nhập")
 
         if result.success:
-            # Lưu password nếu chưa có
             if not self.main.account_service.has_password(mst):
                 self.main.account_service.add_account(mst, password)
-            self._status.configure(text="Dang nhap thanh cong!", text_color=self.colors["success"])
+            self._status.configure(text="Đăng nhập thành công!", text_color=self.colors["success"])
+            # Callback to main window, then close popup
             self.main.on_login_success(mst)
+            self.after(500, self._close_popup)
         else:
-            self._status.configure(text=f"Loi: {result.error_msg}", text_color=self.colors["error"])
-            self._load_captcha()  # Refresh captcha
+            self._status.configure(text=f"Lỗi: {result.error_msg}", text_color=self.colors["error"])
+            self._load_captcha()
+
+    def _close_popup(self):
+        """Đóng popup sau khi login thành công."""
+        self._is_destroyed = True
+        try:
+            self.grab_release()
+            self.destroy()
+        except Exception:
+            pass
+
+    def _on_close(self):
+        """Xử lý khi user đóng popup."""
+        self._is_destroyed = True
+        try:
+            self.grab_release()
+            self.destroy()
+        except Exception:
+            pass
+
+    def _center(self):
+        self.update_idletasks()
+        parent = self.master.winfo_toplevel()
+        pw = parent.winfo_width()
+        ph = parent.winfo_height()
+        px = parent.winfo_x()
+        py = parent.winfo_y()
+        w, h = 440, 520
+        x = px + (pw - w) // 2
+        y = py + (ph - h) // 2
+        self.geometry(f"{w}x{h}+{x}+{y}")

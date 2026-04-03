@@ -311,3 +311,185 @@
 2026-03-29 17:10:14 | INFO     | app.services.excel_export_service | Exported detail: 16 HĐ, 38 dòng hàng → C:/Users/User/Desktop/HDDT_ChiTiet.xlsx
 2026-03-29 17:11:43 | INFO     | app.models.api_client     | API Client closed
 2026-03-29 17:11:43 | INFO     | app.ui.main_window        | Application closed
+2026-04-03 15:21:28 | INFO     | __main__                  | ============================================================
+2026-04-03 15:21:28 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-04-03 15:21:28 | INFO     | __main__                  | Python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2026-04-03 15:21:28 | INFO     | __main__                  | CWD: D:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2
+2026-04-03 15:21:28 | INFO     | __main__                  | ============================================================
+2026-04-03 15:21:33 | INFO     | app.models.db_handler     | Database initialized: D:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2\data\app.db
+2026-04-03 15:21:33 | INFO     | app.ui.main_window        | All services initialized
+2026-04-03 15:21:37 | INFO     | app.ui.main_window        | UI Main loop started
+2026-04-03 15:21:38 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 15:38:13 | INFO     | __main__                  | ============================================================
+2026-04-03 15:38:13 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-04-03 15:38:13 | INFO     | __main__                  | Python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2026-04-03 15:38:13 | INFO     | __main__                  | CWD: d:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2
+2026-04-03 15:38:13 | INFO     | __main__                  | ============================================================
+2026-04-03 15:38:15 | INFO     | app.models.db_handler     | Database initialized: d:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2\data\app.db
+2026-04-03 15:38:15 | INFO     | app.ui.main_window        | All services initialized
+2026-04-03 15:38:16 | INFO     | app.ui.main_window        | UI Main loop started
+2026-04-03 15:38:17 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 15:38:18 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-04-03 15:40:34 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 15:40:34 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 15:40:35 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 15:40:35 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 15:40:35 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 15:41:04 | INFO     | app.models.api_client     | API Client closed
+2026-04-03 15:41:04 | INFO     | app.ui.main_window        | Application closed
+2026-04-03 16:26:04 | INFO     | __main__                  | ============================================================
+2026-04-03 16:26:04 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-04-03 16:26:04 | INFO     | __main__                  | Python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2026-04-03 16:26:04 | INFO     | __main__                  | CWD: d:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2
+2026-04-03 16:26:04 | INFO     | __main__                  | ============================================================
+2026-04-03 16:26:06 | INFO     | app.models.db_handler     | Database initialized: d:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2\data\app.db
+2026-04-03 16:26:06 | INFO     | app.ui.main_window        | All services initialized
+2026-04-03 16:26:07 | INFO     | app.ui.main_window        | UI Main loop started
+2026-04-03 16:26:08 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 16:26:10 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-04-03 16:26:10 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 16:26:11 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 16:26:13 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 16:26:14 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 16:27:04 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 16:27:08 | INFO     | app.models.api_client     | API Client closed
+2026-04-03 16:27:08 | INFO     | app.ui.main_window        | Application closed
+2026-04-03 16:27:29 | INFO     | __main__                  | ============================================================
+2026-04-03 16:27:29 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-04-03 16:27:29 | INFO     | __main__                  | Python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2026-04-03 16:27:29 | INFO     | __main__                  | CWD: d:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2
+2026-04-03 16:27:29 | INFO     | __main__                  | ============================================================
+2026-04-03 16:27:30 | INFO     | app.models.db_handler     | Database initialized: d:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2\data\app.db
+2026-04-03 16:27:30 | INFO     | app.ui.main_window        | All services initialized
+2026-04-03 16:27:32 | INFO     | app.ui.main_window        | UI Main loop started
+2026-04-03 16:27:33 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 16:27:33 | INFO     | app.services.captcha_solver | CaptchaSolver: Solved captcha = 'D6YJ6V' (6 chars)
+2026-04-03 16:27:33 | INFO     | app.ui.views.login_view   | SVG captcha solved: D6YJ6V
+2026-04-03 16:27:33 | INFO     | app.ui.views.login_view   | Captcha auto-filled: D6YJ6V
+2026-04-03 16:27:35 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-04-03 16:27:51 | INFO     | app.models.api_client     | Login successful for MST: 0312654914
+2026-04-03 16:27:51 | INFO     | app.services.auth_service | Auth: Logged in as 0312654914
+2026-04-03 16:27:51 | INFO     | app.models.db_handler     | Added account: 0312654914
+2026-04-03 16:27:51 | INFO     | app.models.credential_store | Password stored for MST: 0312654914
+2026-04-03 16:27:51 | INFO     | app.services.account_service | Account added: 0312654914 ()
+2026-04-03 16:28:02 | INFO     | app.services.invoice_query_service | Query purchase: 50 invoices (page 1, total 135)
+2026-04-03 16:28:03 | INFO     | app.services.invoice_query_service | Cached 50/50 invoices for 0312654914
+2026-04-03 16:28:04 | INFO     | app.services.invoice_query_service | Query sold: 50 invoices (page 1, total 91)
+2026-04-03 16:28:05 | INFO     | app.services.invoice_query_service | Cached 50/50 invoices for 0312654914
+2026-04-03 16:28:48 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-04-03 16:30:14 | INFO     | app.models.api_client     | API Client closed
+2026-04-03 16:30:14 | INFO     | app.ui.main_window        | Application closed
+2026-04-03 17:14:08 | INFO     | __main__                  | ============================================================
+2026-04-03 17:14:08 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-04-03 17:14:08 | INFO     | __main__                  | Python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2026-04-03 17:14:08 | INFO     | __main__                  | CWD: D:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2
+2026-04-03 17:14:08 | INFO     | __main__                  | ============================================================
+2026-04-03 17:14:12 | INFO     | app.models.db_handler     | Database initialized: D:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2\data\app.db
+2026-04-03 17:14:12 | INFO     | app.ui.main_window        | All services initialized
+2026-04-03 17:14:16 | INFO     | app.ui.main_window        | UI Main loop started
+2026-04-03 17:14:17 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 17:14:17 | INFO     | app.services.captcha_solver | CaptchaSolver: Solved captcha = '73V4YC' (6 chars)
+2026-04-03 17:14:17 | INFO     | app.ui.views.login_view   | SVG captcha solved: 73V4YC
+2026-04-03 17:14:17 | INFO     | app.ui.views.login_view   | Captcha auto-filled: 73V4YC
+2026-04-03 17:14:18 | INFO     | app.models.api_client     | Login successful for MST: 0312654914
+2026-04-03 17:14:18 | INFO     | app.services.auth_service | Auth: Logged in as 0312654914
+2026-04-03 17:14:19 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-04-03 17:14:23 | INFO     | app.services.invoice_query_service | Query purchase: 50 invoices (page 1, total 135)
+2026-04-03 17:14:24 | INFO     | app.services.invoice_query_service | Cached 50/50 invoices for 0312654914
+2026-04-03 17:14:25 | INFO     | app.services.invoice_query_service | Query sold: 50 invoices (page 1, total 91)
+2026-04-03 17:14:26 | INFO     | app.services.invoice_query_service | Cached 50/50 invoices for 0312654914
+2026-04-03 17:15:07 | INFO     | app.services.invoice_query_service | Query sold: 50 invoices (page 1, total 91)
+2026-04-03 17:15:08 | INFO     | app.services.invoice_query_service | Cached 50/50 invoices for 0312654914
+2026-04-03 17:16:17 | INFO     | app.services.excel_export_service | Exported detail: 150 HĐ, 0 dòng hàng → D:/OneDrive - SHINE GROUP/Desktop/HDDT_ChiTiet.xlsx
+2026-04-03 17:21:11 | INFO     | app.services.invoice_query_service | Query purchase: 39 invoices (page 1, total 39)
+2026-04-03 17:21:11 | INFO     | app.services.invoice_query_service | Cached 39/39 invoices for 0312654914
+2026-04-03 17:21:20 | INFO     | app.services.invoice_query_service | Query purchase: 50 invoices (page 1, total 135)
+2026-04-03 17:21:21 | INFO     | app.services.invoice_query_service | Cached 50/50 invoices for 0312654914
+2026-04-03 17:22:19 | INFO     | app.models.api_client     | API Client closed
+2026-04-03 17:22:19 | INFO     | app.ui.main_window        | Application closed
+2026-04-03 17:28:11 | INFO     | __main__                  | ============================================================
+2026-04-03 17:28:11 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-04-03 17:28:11 | INFO     | __main__                  | Python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2026-04-03 17:28:11 | INFO     | __main__                  | CWD: D:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2
+2026-04-03 17:28:11 | INFO     | __main__                  | ============================================================
+2026-04-03 17:28:15 | INFO     | app.models.db_handler     | Database initialized: D:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2\data\app.db
+2026-04-03 17:28:15 | INFO     | app.ui.main_window        | All services initialized
+2026-04-03 17:28:18 | INFO     | app.ui.main_window        | UI Main loop started
+2026-04-03 17:28:22 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-04-03 17:28:57 | INFO     | __main__                  | ============================================================
+2026-04-03 17:28:57 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-04-03 17:28:57 | INFO     | __main__                  | Python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2026-04-03 17:28:57 | INFO     | __main__                  | CWD: D:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2
+2026-04-03 17:28:57 | INFO     | __main__                  | ============================================================
+2026-04-03 17:29:00 | INFO     | app.models.db_handler     | Database initialized: D:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2\data\app.db
+2026-04-03 17:29:00 | INFO     | app.ui.main_window        | All services initialized
+2026-04-03 17:29:02 | INFO     | app.ui.main_window        | UI Main loop started
+2026-04-03 17:29:04 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-04-03 17:29:06 | INFO     | app.models.api_client     | Captcha fetched successfully
+2026-04-03 17:29:06 | INFO     | app.services.captcha_solver | CaptchaSolver: Solved captcha = 'Q89476' (6 chars)
+2026-04-03 17:29:06 | INFO     | app.ui.views.login_view   | SVG captcha solved: Q89476
+2026-04-03 17:29:07 | INFO     | app.ui.views.login_view   | Captcha auto-filled: Q89476
+2026-04-03 17:29:08 | INFO     | app.models.api_client     | Login successful for MST: 0312654914
+2026-04-03 17:29:08 | INFO     | app.services.auth_service | Auth: Logged in as 0312654914
+2026-04-03 17:29:13 | INFO     | app.services.invoice_query_service | Query purchase: 50 invoices (page 1, total 135)
+2026-04-03 17:29:14 | INFO     | app.services.invoice_query_service | Cached 50/50 invoices for 0312654914
+2026-04-03 17:29:33 | ERROR    | app.models.api_client     | Download failed for K26TVS-241589: HTTP 500
+2026-04-03 17:29:33 | ERROR    | app.models.api_client     | Download failed for C26TBI-2336: HTTP 500
+2026-04-03 17:29:33 | ERROR    | app.models.api_client     | Download failed for C26TBI-2338: HTTP 500
+2026-04-03 17:29:34 | ERROR    | app.models.api_client     | Download failed for C26TBI-2339: HTTP 500
+2026-04-03 17:29:34 | ERROR    | app.models.api_client     | Download failed for C26TBI-2340: HTTP 500
+2026-04-03 17:29:34 | ERROR    | app.models.api_client     | Download failed for C26TBI-2341: HTTP 429
+2026-04-03 17:29:34 | ERROR    | app.models.api_client     | Download failed for C26TBI-2342: HTTP 429
+2026-04-03 17:29:34 | ERROR    | app.models.api_client     | Download failed for K26TCA-3705: HTTP 429
+2026-04-03 17:29:34 | ERROR    | app.models.api_client     | Download failed for C26TBI-2238: HTTP 429
+2026-04-03 17:29:34 | ERROR    | app.models.api_client     | Download failed for C26TVK-10317: HTTP 429
+2026-04-03 17:29:34 | ERROR    | app.models.api_client     | Download failed for C26TVC-205: HTTP 429
+2026-04-03 17:29:34 | ERROR    | app.models.api_client     | Download failed for K26TCA-3093: HTTP 429
+2026-04-03 17:29:35 | ERROR    | app.models.api_client     | Download failed for K26TVC-16374: HTTP 429
+2026-04-03 17:29:35 | ERROR    | app.models.api_client     | Download failed for C26TAS-1276: HTTP 429
+2026-04-03 17:29:35 | ERROR    | app.models.api_client     | Download failed for C26TAS-1277: HTTP 429
+2026-04-03 17:29:35 | ERROR    | app.models.api_client     | Download failed for C26TSC-87512: HTTP 429
+2026-04-03 17:29:35 | ERROR    | app.models.api_client     | Download failed for C26TBI-2190: HTTP 429
+2026-04-03 17:29:35 | ERROR    | app.models.api_client     | Download failed for C26TMG-1237: HTTP 429
+2026-04-03 17:29:35 | ERROR    | app.models.api_client     | Download failed for K26TEG-61424166: HTTP 429
+2026-04-03 17:29:35 | ERROR    | app.models.api_client     | Download failed for C26THD-180: HTTP 429
+2026-04-03 17:29:36 | ERROR    | app.models.api_client     | Download failed for C26TSS-4630: HTTP 429
+2026-04-03 17:29:36 | ERROR    | app.models.api_client     | Download failed for C26TNP-14845: HTTP 429
+2026-04-03 17:29:36 | ERROR    | app.models.api_client     | Download failed for C26TNC-363: HTTP 429
+2026-04-03 17:29:36 | ERROR    | app.models.api_client     | Download failed for C26TYY-178: HTTP 429
+2026-04-03 17:29:36 | ERROR    | app.models.api_client     | Download failed for C26TTC-18815: HTTP 429
+2026-04-03 17:29:36 | ERROR    | app.models.api_client     | Download failed for C26TVN-71: HTTP 429
+2026-04-03 17:29:37 | ERROR    | app.models.api_client     | Download failed for C26TVN-72: HTTP 429
+2026-04-03 17:29:37 | ERROR    | app.models.api_client     | Download failed for C26TYY-359: HTTP 429
+2026-04-03 17:29:37 | ERROR    | app.models.api_client     | Download failed for K26TFB-22636: HTTP 429
+2026-04-03 17:29:37 | ERROR    | app.models.api_client     | Download failed for C26TFB-248: HTTP 429
+2026-04-03 17:29:37 | ERROR    | app.models.api_client     | Download failed for C26TAS-1239: HTTP 429
+2026-04-03 17:29:37 | ERROR    | app.models.api_client     | Download failed for C26TVC-174: HTTP 429
+2026-04-03 17:29:37 | ERROR    | app.models.api_client     | Download failed for C26TVC-178: HTTP 429
+2026-04-03 17:29:37 | ERROR    | app.models.api_client     | Download failed for C26TBB-17752: HTTP 429
+2026-04-03 17:29:38 | ERROR    | app.models.api_client     | Download failed for C26TAA-709388: HTTP 429
+2026-04-03 17:29:38 | ERROR    | app.models.api_client     | Download failed for C26TAT-7161: HTTP 429
+2026-04-03 17:29:38 | ERROR    | app.models.api_client     | Download failed for C26TST-1144: HTTP 429
+2026-04-03 17:29:38 | ERROR    | app.models.api_client     | Download failed for C26GST-1285: HTTP 429
+2026-04-03 17:29:38 | ERROR    | app.models.api_client     | Download failed for C26TTV-365: HTTP 429
+2026-04-03 17:29:38 | ERROR    | app.models.api_client     | Download failed for C26TCL-381080: HTTP 429
+2026-04-03 17:29:38 | ERROR    | app.models.api_client     | Download failed for K26TVS-217259: HTTP 429
+2026-04-03 17:29:39 | ERROR    | app.models.api_client     | Download failed for C26TAS-1199: HTTP 429
+2026-04-03 17:29:39 | ERROR    | app.models.api_client     | Download failed for C26TDH-2055: HTTP 429
+2026-04-03 17:29:39 | ERROR    | app.models.api_client     | Download failed for C26TMH-1470: HTTP 429
+2026-04-03 17:29:39 | ERROR    | app.models.api_client     | Download failed for C26TMH-1471: HTTP 429
+2026-04-03 17:29:39 | ERROR    | app.models.api_client     | Download failed for C26TBI-2014: HTTP 429
+2026-04-03 17:29:39 | ERROR    | app.models.api_client     | Download failed for C26TBI-2015: HTTP 429
+2026-04-03 17:29:39 | ERROR    | app.models.api_client     | Download failed for C26TBI-2016: HTTP 429
+2026-04-03 17:29:40 | ERROR    | app.models.api_client     | Download failed for C26TBI-2017: HTTP 429
+2026-04-03 17:29:40 | ERROR    | app.models.api_client     | Download failed for C26THT-41: HTTP 429
+2026-04-03 17:30:25 | INFO     | __main__                  | ============================================================
+2026-04-03 17:30:25 | INFO     | __main__                  | Starting Tool Quản Lý Hóa Đơn Điện Tử v2.0.0
+2026-04-03 17:30:25 | INFO     | __main__                  | Python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2026-04-03 17:30:25 | INFO     | __main__                  | CWD: D:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2
+2026-04-03 17:30:25 | INFO     | __main__                  | ============================================================
+2026-04-03 17:30:26 | INFO     | app.models.db_handler     | Database initialized: D:\OneDrive - SHINE GROUP\00.PHAT\900.CaNhan\DuAn\Tool_HĐT_v2\data\app.db
+2026-04-03 17:30:26 | INFO     | app.ui.main_window        | All services initialized
+2026-04-03 17:30:26 | INFO     | app.ui.main_window        | UI Main loop started
+2026-04-03 17:30:28 | WARNING  | app.services.remote_config_service | Remote config HTTP 404
+2026-04-03 17:31:27 | INFO     | app.ui.main_window        | Application closed

@@ -179,11 +179,26 @@ class DataTable(tk.Frame):
         self._auto_fit_columns(formatted)
 
         # Alignment: right cho cột số
-        for i, col in enumerate(self._columns):
-            if col.get("format") in ("currency", "number"):
-                self.sheet.align(align="e", columns=[i])
-            elif col.get("format") == "date":
-                self.sheet.align(align="center", columns=[i])
+        try:
+            for i, col in enumerate(self._columns):
+                if col.get("format") in ("currency", "number"):
+                    try:
+                        self.sheet.align(columns=[i], align="e")
+                    except TypeError:
+                        try:
+                            self.sheet.align("e", column=i)
+                        except Exception:
+                            pass
+                elif col.get("format") == "date":
+                    try:
+                        self.sheet.align(columns=[i], align="center")
+                    except TypeError:
+                        try:
+                            self.sheet.align("center", column=i)
+                        except Exception:
+                            pass
+        except Exception:
+            pass  # Skip alignment if tksheet API incompatible
 
         self.sheet.redraw()
 
