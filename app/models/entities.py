@@ -352,8 +352,8 @@ class QueryResult:
     """Kết quả tra cứu danh sách HĐ từ API."""
     invoices: List[InvoiceSummary] = field(default_factory=list)
     total: int = 0
-    page: int = 1
     page_size: int = 50
+    state: str = ""             # Cursor cho trang tiếp theo
     success: bool = False
     error_msg: str = ""
 

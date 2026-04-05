@@ -36,7 +36,7 @@ logger = get_logger(__name__)
 class MainWindow(ctk.CTk):
     """Cửa sổ chính — orchestrator cho toàn bộ UI."""
 
-    def __init__(self):
+    def __init__(self, skip_login: bool = False, initial_mst: str = "", initial_token: str = ""):
         super().__init__()
         self.colors = get_colors()
 
@@ -58,6 +58,16 @@ class MainWindow(ctk.CTk):
         self.parser_service = InvoiceParserService(self.db)
         self.excel_service = ExcelExportService()
         self.remote_service = RemoteConfigService(self.db)
+
+        # Nếu đã login từ StandaloneLoginWindow → inject token
+        if skip_login and initial_token:
+            self.api_client._token = initial_token
+            self.auth_service._current_mst = initial_mst
+            self.auth_service._is_logged_in = True
+            self._is_logged_in = True
+            logger.info(f"Token injected from standalone login: MST={initial_mst}")
+        else:
+            self._is_logged_in = False
 
         logger.info("All services initialized")
 
@@ -83,6 +93,13 @@ class MainWindow(ctk.CTk):
 
         # ── Background: Remote Config Check ──────────
         self._check_remote_config()
+
+        # ── Auto-open Login Popup on startup ─────────
+        self.withdraw()  # Ẩn cửa sổ chính
+        if skip_login and initial_mst:
+            self.after(100, lambda: self.on_login_success(initial_mst))
+        else:
+            self.after(600, self._open_login_popup)
 
         # ── Cleanup on close ─────────────────────────
         self.protocol("WM_DELETE_WINDOW", self._on_close)
@@ -209,8 +226,48 @@ class MainWindow(ctk.CTk):
         self._theme_switch.pack(anchor="w", pady=(4, 0))
 
         # ── Content Area ─────────────────────────────
-        self._content = ctk.CTkFrame(self, fg_color=c["bg_primary"], corner_radius=0)
-        self._content.pack(side="left", fill="both", expand=True)
+        self._content_wrapper = ctk.CTkFrame(self, fg_color=c["bg_primary"], corner_radius=0)
+        self._content_wrapper.pack(side="left", fill="both", expand=True)
+
+        self._content = ctk.CTkFrame(self._content_wrapper, fg_color=c["bg_primary"], corner_radius=0)
+        self._content.pack(fill="both", expand=True)
+
+        # ── Lock Overlay (covers content until login) ──
+        self._lock_overlay = ctk.CTkFrame(
+            self._content_wrapper,
+            fg_color=c["bg_secondary"],
+            corner_radius=0,
+        )
+        self._lock_overlay.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+        # Lock overlay content
+        lock_inner = ctk.CTkFrame(self._lock_overlay, fg_color="transparent")
+        lock_inner.place(relx=0.5, rely=0.45, anchor="center")
+
+        ctk.CTkLabel(
+            lock_inner, text="🔒",
+            font=("Segoe UI", 64),
+            text_color=c["text_muted"],
+        ).pack()
+        ctk.CTkLabel(
+            lock_inner, text="Vui lòng đăng nhập để sử dụng",
+            font=("Inter", 18, "bold"),
+            text_color=c["text_secondary"],
+        ).pack(pady=(12, 6))
+        ctk.CTkLabel(
+            lock_inner, text="Nhấn nút 🔑 Đăng nhập hoặc đợi popup tự động",
+            font=FONTS.get("body", ("Segoe UI", 13)),
+            text_color=c["text_muted"],
+        ).pack()
+
+        self._lock_login_btn = ctk.CTkButton(
+            lock_inner, text="🔑  Đăng nhập ngay",
+            font=FONTS.get("button", ("Segoe UI", 14, "bold")),
+            fg_color=c["accent"], hover_color=c["accent_hover"],
+            height=44, width=200, corner_radius=10,
+            command=self._open_login_popup,
+        )
+        self._lock_login_btn.pack(pady=(20, 0))
 
         # ── Init Views (lazy, no login view) ──────────
         self._init_views()
@@ -235,12 +292,13 @@ class MainWindow(ctk.CTk):
         if self._login_popup is not None:
             try:
                 self._login_popup.focus_set()
+                self._login_popup.lift()
                 return
             except Exception:
                 self._login_popup = None
 
         from app.ui.views.login_view import LoginPopup
-        self._login_popup = LoginPopup(self, self)
+        self._login_popup = LoginPopup(self, self, mandatory=not self._is_logged_in)
 
         # Track when popup is closed
         def _on_popup_close():
@@ -291,6 +349,7 @@ class MainWindow(ctk.CTk):
         # Refresh shell widgets
         self.configure(fg_color=self.colors["bg_primary"])
         self._sidebar.configure(fg_color=self.colors["bg_secondary"])
+        self._content_wrapper.configure(fg_color=self.colors["bg_primary"])
         self._content.configure(fg_color=self.colors["bg_primary"])
 
         # Text update on theme switch
@@ -334,6 +393,7 @@ class MainWindow(ctk.CTk):
     def on_login_success(self, mst: str):
         """Callback khi đăng nhập thành công."""
         c = self.colors
+        self._is_logged_in = True
         self.status_bar.set_status(f"MST: {mst}", connected=True)
         show_toast(self, f"Đăng nhập thành công: {mst}", "success")
 
@@ -351,12 +411,23 @@ class MainWindow(ctk.CTk):
         # Show logout button
         self._logout_btn.pack(anchor="w", pady=(0, 4))
 
+        # Remove lock overlay — unlock the content
+        try:
+            self._lock_overlay.place_forget()
+        except Exception:
+            pass
+
+        # Hiện lại cửa sổ chính sau khi đăng nhập thành công
+        self.deiconify()
+        self.lift()
+
         # Show invoice view
         self.show_view("invoice_list_view")
 
     def on_logout(self):
         """Callback khi đăng xuất."""
         c = self.colors
+        self._is_logged_in = False
         self.auth_service.logout()
         self.status_bar.set_status("Chưa đăng nhập", connected=False)
         show_toast(self, "Đã đăng xuất", "info")
@@ -372,6 +443,16 @@ class MainWindow(ctk.CTk):
             hover_color=c["accent_hover"],
         )
         self._logout_btn.pack_forget()
+
+        # Re-show lock overlay
+        try:
+            self._lock_overlay.place(relx=0, rely=0, relwidth=1, relheight=1)
+        except Exception:
+            pass
+
+        # Auto-open login popup again
+        self.withdraw() # Ẩn đi khi đăng xuất
+        self.after(300, self._open_login_popup)
 
     def _on_close(self):
         """Cleanup khi đóng app."""

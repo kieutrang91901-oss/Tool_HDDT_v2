@@ -2,10 +2,25 @@ ID: 0310510716
 Pass:XiRT1aA@
 Web:https://hoadondientu.gdt.gov.vn/
 
-Nội dung	HD bán ra	Kết quả kiểm tra	Tình trạng
-Request URL	https://hoadondientu.gdt.gov.vn:30000/query/invoices/sold?sort=tdlap:desc&size=15&search=tdlap=ge=01/02/2026T00:00:00;tdlap=le=28/02/2026T23:59:59	Tất cả	Tất cả
-Request URL	https://hoadondientu.gdt.gov.vn:30000/query/invoices/purchase?sort=tdlap:desc&size=15&search=tdlap=ge=01/03/2026T00:00:00;tdlap=le=22/03/2026T23:59:59;ttxly==5	Đã cấp mã	Tất cả
-Request URL	https://hoadondientu.gdt.gov.vn:30000/query/invoices/purchase?sort=tdlap:desc&size=15&search=tdlap=ge=01/03/2026T00:00:00;tdlap=le=22/03/2026T23:59:59;ttxly==6	Cục thuế đã không nhận mã	Tất cả
-Request URL	https://hoadondientu.gdt.gov.vn:30000/sco-query/invoices/purchase?sort=tdlap:desc&size=15&search=tdlap=ge=01/03/2026T00:00:00;tdlap=le=22/03/2026T23:59:59;ttxly==8	Cục thuế đã nhận hóa đơn có mã khởi tạo từ máy tính tiền	Tất cả
-End-point	/tra-cuu/tra-cuu-hoa-don		
+Nội dung	Kết quả kiểm tra	Tình trạng	Request URL
+Hóa đơn bán ra - Hóa đơn điện tử	Tất cả	Tất cả	https://hoadondientu.gdt.gov.vn:30000/query/invoices/sold?sort=tdlap:desc&size=15&search=tdlap=ge=06/03/2026T00:00:00;tdlap=le=05/04/2026T23:59:59
+Hóa đơn bán ra - Khởi tạo từ máy tính tiền	Tất cả	Tất cả	https://hoadondientu.gdt.gov.vn:30000/sco-query/invoices/sold?sort=tdlap:desc&size=15&search=tdlap=ge=06/03/2026T00:00:00;tdlap=le=05/04/2026T23:59:59
+Hóa đơn mua vào - Hóa đơn điện tử	Đã cấp mã hóa đơn	Tất cả	https://hoadondientu.gdt.gov.vn:30000/query/invoices/purchase?sort=tdlap:desc&size=15&search=tdlap=ge=01/03/2026T00:00:00;tdlap=le=22/03/2026T23:59:59;ttxly==5
+Hóa đơn mua vào - Hóa đơn điện tử - View hóa đơn	Đã cấp mã hóa đơn	Tất cả	"https://hoadondientu.gdt.gov.vn:30000/query/invoices/detail?nbmst=0309532497&khhdon=C26TKV&shdon=41142&khmshdon=1
+https://hoadondientu.gdt.gov.vn/static/images/viewinvoice-bg.jpg
+https://hoadondientu.gdt.gov.vn/static/images/sign-check.jpg"
+Hóa đơn mua vào - Hóa đơn điện tử	Cục thuế đã không nhận mã	Tất cả	https://hoadondientu.gdt.gov.vn:30000/query/invoices/purchase?sort=tdlap:desc&size=15&search=tdlap=ge=01/03/2026T00:00:00;tdlap=le=22/03/2026T23:59:59;ttxly==6
+Hóa đơn mua vào - Hóa đơn điện tử - View hóa đơn	Cục thuế đã không nhận mã	Tất cả	"https://hoadondientu.gdt.gov.vn:30000/query/invoices/detail?nbmst=0305358801&khhdon=K26TDS&shdon=11224&khmshdon=1
+https://hoadondientu.gdt.gov.vn/static/images/viewinvoice-bg.jpg
+https://hoadondientu.gdt.gov.vn/static/images/sign-check.jpg"
+Hóa đơn mua vào - Hóa đơn điện tử	Cục thuế đã nhận hóa đơn có mã khởi tạo từ máy tính tiền	Tất cả	https://hoadondientu.gdt.gov.vn:30000/query/invoices/purchase?sort=tdlap:desc&size=15&search=tdlap=ge=06/03/2026T00:00:00;tdlap=le=05/04/2026T23:59:59;ttxly==8
+Hóa đơn mua vào - Khởi tạo từ máy tính tiền	Đã cấp mã hóa đơn	Tất cả	https://hoadondientu.gdt.gov.vn:30000/sco-query/invoices/purchase?sort=tdlap:desc&size=15&search=tdlap=ge=06/03/2026T00:00:00;tdlap=le=05/04/2026T23:59:59;ttxly==5
+Hóa đơn mua vào - Khởi tạo từ máy tính tiền	Cục thuế đã không nhận mã	Tất cả	https://hoadondientu.gdt.gov.vn:30000/sco-query/invoices/purchase?sort=tdlap:desc&size=15&search=tdlap=ge=06/03/2026T00:00:00;tdlap=le=05/04/2026T23:59:59;ttxly==6
+Hóa đơn mua vào - Khởi tạo từ máy tính tiền	Cục thuế đã nhận hóa đơn có mã khởi tạo từ máy tính tiền	Tất cả	https://hoadondientu.gdt.gov.vn:30000/sco-query/invoices/purchase?sort=tdlap:desc&size=15&search=tdlap=ge=06/03/2026T00:00:00;tdlap=le=05/04/2026T23:59:59;ttxly==8
+Hóa đơn mua vào - Khởi tạo từ máy tính tiền - View hóa đơn	Cục thuế đã nhận hóa đơn có mã khởi tạo từ máy tính tiền	Tất cả	https://hoadondientu.gdt.gov.vn:30000/sco-query/invoices/detail?nbmst=0312650437&khhdon=C26MGA&shdon=2736943&khmshdon=1
+End-point			/tra-cuu/tra-cuu-hoa-don
+
+
+
+
  

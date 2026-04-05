@@ -1,7 +1,7 @@
 """
 Toolbar — Thanh công cụ phía trên bảng dữ liệu.
 
-Chứa các nút hành động: Tải HĐ, Import, Export, Cấu hình cột...
+Tự động co giãn: luôn hiển thị tất cả nút bất kể kích thước cửa sổ.
 """
 import customtkinter as ctk
 from config.theme import get_colors, FONTS, SPACING
@@ -43,7 +43,7 @@ class ToolbarButton(ctk.CTkButton):
 
 
 class Toolbar(ctk.CTkFrame):
-    """Thanh công cụ tái sử dụng."""
+    """Thanh công cụ tái sử dụng — tự động wrap khi cửa sổ nhỏ."""
 
     def __init__(self, parent, **kwargs):
         colors = get_colors()
@@ -51,11 +51,17 @@ class Toolbar(ctk.CTkFrame):
             parent,
             fg_color=colors["bg_secondary"],
             corner_radius=0,
-            height=48,
             **kwargs,
         )
-        self.pack_propagate(False)
+        # Cho phép co giãn theo nội dung thay vì cố định height
         self._buttons = {}
+        self._items = []  # List of (widget, type) for layout
+
+        # Inner frame chứa tất cả button (dùng grid để wrap)
+        self._inner = ctk.CTkFrame(self, fg_color="transparent")
+        self._inner.pack(fill="x", padx=4, pady=6)
+
+        self._col = 0
 
     def add_button(
         self,
@@ -67,16 +73,16 @@ class Toolbar(ctk.CTkFrame):
         side: str = "left",
     ) -> ToolbarButton:
         """Thêm nút vào toolbar."""
-        btn = ToolbarButton(self, text=text, icon=icon, command=command, style=style)
-        btn.pack(side=side, padx=4, pady=8)
+        btn = ToolbarButton(self._inner, text=text, icon=icon, command=command, style=style)
+        btn.pack(side=side, padx=2, pady=2)
         self._buttons[key] = btn
         return btn
 
     def add_separator(self):
         """Thêm đường phân cách."""
         colors = get_colors()
-        sep = ctk.CTkFrame(self, width=1, fg_color=colors["border"], height=24)
-        sep.pack(side="left", padx=8, pady=12)
+        sep = ctk.CTkFrame(self._inner, width=1, fg_color=colors["border"], height=24)
+        sep.pack(side="left", padx=6, pady=4)
 
     def get_button(self, key: str):
         return self._buttons.get(key)

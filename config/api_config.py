@@ -46,6 +46,16 @@ class GDT_API_Config:
         "Content-Type": "application/json;charset=UTF-8",
         "Accept-Encoding": "gzip",
     }
+
+    # Headers cho export XML (tải hóa đơn)
+    EXPORT_XML_HEADERS = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/128.0.0.0 Safari/537.36"
+        ),
+        "Accept": "application/xml",
+    }
     
     # ═══════════════════════════════════════════════════════
     # 3. ENDPOINTS XÁC THỰC (Auth)
@@ -68,6 +78,7 @@ class GDT_API_Config:
     EP_INVOICE_SOLD = "/invoices/sold"
     EP_INVOICE_DETAIL = "/invoices/detail"
     EP_EXPORT_XML = "/invoices/export-xml"
+    EP_EXPORT_EXCEL = "/invoices/export-excel"
     
     # ═══════════════════════════════════════════════════════
     # 6. TRẠNG THÁI XỬ LÝ (ttxly) — Dùng cho bộ lọc

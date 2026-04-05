@@ -1,6 +1,7 @@
-"""
-Tool Quản Lý Hóa Đơn Điện Tử v2
+"""Tool Quản Lý Hóa Đơn Điện Tử v2
 Entry point — Điểm khởi động duy nhất.
+
+Flow: Login popup → (thành công) → MainWindow.
 """
 import sys
 import os
@@ -25,7 +26,12 @@ from config.settings import APP_NAME, APP_VERSION
 
 
 def main():
-    """Khởi động ứng dụng."""
+    """Khởi động ứng dụng.
+
+    Flow:
+    1. Tạo hidden root + Login popup (Toplevel).
+    2. Sau khi đăng nhập thành công → đóng root, tạo MainWindow.
+    """
     setup_logging()
     logger = get_logger(__name__)
     logger.info(f"{'='*60}")
@@ -34,14 +40,28 @@ def main():
     logger.info(f"CWD: {os.getcwd()}")
     logger.info(f"{'='*60}")
 
-    print("[HDDT] Loading UI...")
+    print("[HDDT] Loading login UI...")
+    import customtkinter as ctk
+    ctk.set_appearance_mode("light")
+
+    from app.ui.views.login_view import show_login_and_wait
+
+    print("[HDDT] Showing login window...")
+    login_result = show_login_and_wait()
+
+    if not login_result:
+        print("[HDDT] Login cancelled or failed. Exiting.")
+        sys.exit(0)
+
+    logged_mst = login_result.get("mst", "")
+    logged_token = login_result.get("token", "")
+
+    print("[HDDT] Login successful. Loading main window...")
     from app.ui.main_window import MainWindow
 
-    print("[HDDT] Creating window...")
-    app = MainWindow()
-
+    app = MainWindow(skip_login=True, initial_mst=logged_mst, initial_token=logged_token)
     print("[HDDT] Window ready - showing now")
-    app.deiconify()  # Đảm bảo window không bị iconify
+    app.deiconify()
     app.run()
 
 
