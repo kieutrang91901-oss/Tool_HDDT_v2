@@ -1,8 +1,10 @@
 """
-Column Configuration — Định nghĩa cột mặc định và format types.
+Column Configuration — Định nghĩa cột mặc định cho Bảng Tổng Hợp và Bảng Chi Tiết.
 
-Cột Summary (bảng danh sách HĐ) và Detail (bảng hàng hóa)
-đều cho phép user tự chọn hiển thị/ẩn.
+Dựa theo:
+- De_Xuat_Bang_Du_Lieu.md (Đặc tả cấu trúc dữ liệu)
+- API fields từ /query/invoices/purchase|sold (Summary)
+- API fields từ /query/invoices/detail > hdhhdvu[] (Detail items)
 """
 
 # ═══════════════════════════════════════════════════════
@@ -14,86 +16,91 @@ Cột Summary (bảng danh sách HĐ) và Detail (bảng hàng hóa)
 # "date"     → format DD/MM/YYYY
 
 # ═══════════════════════════════════════════════════════
-# BẢNG TỔNG HỢP (Summary) — Cột mặc định
+# BẢNG TỔNG HỢP (Summary) — Mục 2 đề xuất
+# Source: /query/invoices/purchase|sold
 # ═══════════════════════════════════════════════════════
 
 SUMMARY_COLUMNS_DEFAULT = [
     {"key": "stt",              "name": "STT",                   "format": "text",     "width": 50,  "visible": True},
-    {"key": "mau_so",           "name": "Ký hiệu mẫu số",       "format": "text",     "width": 60,  "visible": True},
-    {"key": "ky_hieu",          "name": "Ký hiệu hóa đơn",      "format": "text",     "width": 100, "visible": True},
-    {"key": "so_hd",            "name": "Số hóa đơn",            "format": "text",     "width": 100, "visible": True},
+    # ── Cột mặc định (bắt buộc hiện) ──────────────────
+    {"key": "ky_hieu",          "name": "Ký hiệu HĐ",           "format": "text",     "width": 100, "visible": True},
+    {"key": "so_hd",            "name": "Số hóa đơn",            "format": "text",     "width": 90,  "visible": True},
     {"key": "ngay_lap",         "name": "Ngày lập",              "format": "date",     "width": 110, "visible": True},
-    {"key": "mst_ban",          "name": "MST người bán",         "format": "text",     "width": 120, "visible": True},
-    {"key": "ten_ban",          "name": "Tên người bán",         "format": "text",     "width": 250, "visible": True},
-    {"key": "mst_mua",          "name": "MST người mua",         "format": "text",     "width": 120, "visible": True},
-    {"key": "ten_mua",          "name": "Tên người mua",         "format": "text",     "width": 250, "visible": True},
-    {"key": "dia_chi_mua",      "name": "Địa chỉ người mua",    "format": "text",     "width": 250, "visible": False},
-    {"key": "tong_chua_thue",   "name": "Tổng tiền chưa thuế",  "format": "currency", "width": 130, "visible": True},
-    {"key": "tong_thue",        "name": "Tổng tiền thuế",        "format": "currency", "width": 120, "visible": True},
-    {"key": "tong_ck_tm",       "name": "Tổng tiền CK thương mại", "format": "currency", "width": 130, "visible": False},
-    {"key": "tong_phi",         "name": "Tổng tiền phí",         "format": "currency", "width": 110, "visible": False},
-    {"key": "tong_thanh_toan",  "name": "Tổng tiền thanh toán",  "format": "currency", "width": 140, "visible": True},
-    {"key": "don_vi_tien_te",   "name": "Đơn vị tiền tệ",       "format": "text",     "width": 80,  "visible": False},
-    {"key": "ty_gia",           "name": "Tỷ giá",                "format": "number",   "width": 80,  "visible": False},
-    {"key": "trang_thai",       "name": "Trạng thái hóa đơn",   "format": "text",     "width": 130, "visible": True},
-    {"key": "kq_kiem_tra",      "name": "Kết quả kiểm tra HĐ",  "format": "text",     "width": 180, "visible": True},
+    {"key": "mst_ban",          "name": "MST Bên Bán",           "format": "text",     "width": 120, "visible": True},
+    {"key": "ten_ban",          "name": "Tên Bên Bán",           "format": "text",     "width": 250, "visible": True},
+    {"key": "mst_mua",          "name": "MST Bên Mua",           "format": "text",     "width": 120, "visible": True},
+    {"key": "ten_mua",          "name": "Tên Bên Mua",           "format": "text",     "width": 250, "visible": True},
+    {"key": "tong_thanh_toan",  "name": "Tổng Thanh Toán",       "format": "currency", "width": 140, "visible": True},
+    {"key": "trang_thai",       "name": "Trạng Thái HĐ",         "format": "text",     "width": 130, "visible": True},
+    {"key": "ttxly",            "name": "Kết Quả XL (CQT)",      "format": "text",     "width": 180, "visible": True},
+    # ── Cột tùy chọn (mặc định ẩn) ────────────────────
+    {"key": "id_hoa_don",       "name": "Mã Nội Bộ (ID)",        "format": "text",     "width": 100, "visible": False},
+    {"key": "nguon_tai",        "name": "Nguồn Tải API",         "format": "text",     "width": 200, "visible": True},
+    {"key": "dia_chi_ban",      "name": "Địa Chỉ Bên Bán",      "format": "text",     "width": 250, "visible": False},
+    {"key": "dia_chi_mua",      "name": "Địa Chỉ Bên Mua",      "format": "text",     "width": 250, "visible": False},
+    {"key": "tong_chua_thue",   "name": "Tổng Tiền Trước Thuế",  "format": "currency", "width": 140, "visible": False},
+    {"key": "tong_thue",        "name": "Tổng Phí VAT",          "format": "currency", "width": 120, "visible": False},
+    {"key": "mau_so",           "name": "Mẫu Số",                "format": "text",     "width": 60,  "visible": False},
 ]
 
 # ═══════════════════════════════════════════════════════
-# BẢNG CHI TIẾT HÀNG HÓA (Detail) — Cột mặc định
+# BẢNG CHI TIẾT (Detail) — Mục 3.2 đề xuất
+# Source: /query/invoices/detail > hdhhdvu[]
+#
+# Mỗi dòng = 1 line item từ 1 hóa đơn.
+# Header context (ky_hieu, so_hd) giúp nhận diện HĐ cha.
 # ═══════════════════════════════════════════════════════
 
 DETAIL_COLUMNS_DEFAULT = [
-    {"key": "stt",          "name": "STT",              "format": "text",     "width": 50,  "visible": True},
+    {"key": "stt",          "name": "STT",               "format": "text",     "width": 50,  "visible": True},
     # ── Header context (invoice-level) ─────────────────
-    {"key": "ky_hieu",      "name": "Ký hiệu HĐ",      "format": "text",     "width": 100, "visible": True},
-    {"key": "so_hd",        "name": "Số HĐ",            "format": "text",     "width": 80,  "visible": True},
-    {"key": "ngay_lap",     "name": "Ngày lập",         "format": "date",     "width": 100, "visible": False},
-    {"key": "mst_ban",      "name": "MST NB",           "format": "text",     "width": 120, "visible": False},
-    {"key": "ten_ban",      "name": "Tên NB",           "format": "text",     "width": 200, "visible": False},
-    # ── Item-level (hàng hóa) ─────────────────────────
-    {"key": "tinh_chat",    "name": "Tính chất",        "format": "text",     "width": 80,  "visible": True},
-    {"key": "ma_hang",      "name": "Mã hàng",          "format": "text",     "width": 120, "visible": True},
-    {"key": "ten_hang",     "name": "Tên hàng hóa/DV",  "format": "text",     "width": 300, "visible": True},
-    {"key": "don_vi_tinh",  "name": "ĐVT",              "format": "text",     "width": 70,  "visible": True},
-    {"key": "so_luong",     "name": "Số lượng",         "format": "number",   "width": 90,  "visible": True},
-    {"key": "don_gia",      "name": "Đơn giá",          "format": "currency", "width": 120, "visible": True},
-    {"key": "ty_le_ck",     "name": "TL CK %",          "format": "number",   "width": 80,  "visible": False},
-    {"key": "so_tien_ck",   "name": "ST Chiết khấu",    "format": "currency", "width": 110, "visible": False},
-    {"key": "thanh_tien",   "name": "Thành tiền",       "format": "currency", "width": 130, "visible": True},
-    {"key": "thue_suat",    "name": "Thuế suất",        "format": "text",     "width": 80,  "visible": True},
-    {"key": "tien_thue",    "name": "Tiền thuế",        "format": "currency", "width": 110, "visible": True},
+    {"key": "ky_hieu",      "name": "Ký hiệu HĐ",       "format": "text",     "width": 100, "visible": True},
+    {"key": "so_hd",        "name": "Số HĐ",             "format": "text",     "width": 80,  "visible": True},
+    {"key": "ngay_lap",     "name": "Ngày lập",          "format": "date",     "width": 100, "visible": False},
+    {"key": "mst_ban",      "name": "MST NB",            "format": "text",     "width": 120, "visible": False},
+    {"key": "ten_ban",      "name": "Tên NB",            "format": "text",     "width": 200, "visible": False},
+    # ── Item-level (hdhhdvu[]) ─────────────────────────
+    # Cột mặc định (bắt buộc hiện)
+    {"key": "ten_hang",     "name": "Tên Hàng Hóa/DV",   "format": "text",     "width": 350, "visible": True},
+    {"key": "thanh_tien",   "name": "Thành Tiền",        "format": "currency", "width": 130, "visible": True},
+    # Cột tùy chọn
+    {"key": "tinh_chat",    "name": "Tính Chất",         "format": "text",     "width": 100, "visible": True},
+    {"key": "don_vi_tinh",  "name": "ĐVT",               "format": "text",     "width": 70,  "visible": True},
+    {"key": "so_luong",     "name": "Số Lượng",          "format": "number",   "width": 90,  "visible": True},
+    {"key": "don_gia",      "name": "Đơn Giá",           "format": "currency", "width": 120, "visible": True},
+    {"key": "thue_suat",    "name": "Thuế Suất",         "format": "text",     "width": 80,  "visible": True},
+    {"key": "tien_thue",    "name": "Tiền Thuế",         "format": "currency", "width": 110, "visible": True},
+    {"key": "so_tien_ck",   "name": "Tiền CK/KM",        "format": "currency", "width": 110, "visible": False},
 ]
 
+
 # ═══════════════════════════════════════════════════════
-# HELPER: Lấy prefix cho dynamic column key
+# COLUMN CONFIG ENTITY (DB)
 # ═══════════════════════════════════════════════════════
 
-SCOPE_PREFIX = {
-    "header":  "hdr_",
-    "seller":  "slr_",
-    "buyer":   "byr_",
-    "item":    "itm_",
-    "payment": "pmt_",
-    "invoice": "inv_",
-}
+from dataclasses import dataclass
+
+@dataclass
+class ColumnConfig:
+    """Cấu hình 1 cột trên bảng, lưu DB để user custom."""
+    column_key: str
+    display_name: str
+    format_type: str = "text"
+    width: int = 100
+    is_visible: bool = True
+    sort_order: int = 0
+    table_name: str = "summary"   # "summary" | "detail"
+    is_dynamic: bool = False
+    scope: str = ""               # "header" | "seller" | ... | ""
 
 
-def make_dynamic_column_key(scope: str, field_key: str) -> str:
-    """Tạo column_key cho dynamic field.
-    
-    Ví dụ: scope='header', field_key='PortalLink' → 'hdr_PortalLink'
-    """
-    prefix = SCOPE_PREFIX.get(scope, "ext_")
-    return f"{prefix}{field_key}"
+# ═══════════════════════════════════════════════════════
+# DYNAMIC COLUMN UTILS
+# ═══════════════════════════════════════════════════════
 
-
-def parse_dynamic_column_key(column_key: str):
-    """Parse dynamic column_key thành (scope, field_key).
-    
-    Ví dụ: 'hdr_PortalLink' → ('header', 'PortalLink')
-    """
-    for scope, prefix in SCOPE_PREFIX.items():
-        if column_key.startswith(prefix):
-            return scope, column_key[len(prefix):]
-    return "", column_key
+def parse_dynamic_column_key(key: str):
+    """Parse key dạng 'scope__field' → (scope, field)."""
+    if "__" in key:
+        parts = key.split("__", 1)
+        return parts[0], parts[1]
+    return "", key

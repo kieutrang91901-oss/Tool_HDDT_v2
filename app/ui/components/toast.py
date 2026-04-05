@@ -65,11 +65,30 @@ class Toast(ctk.CTkToplevel):
         )
         msg_label.pack(side="left", padx=(4, 16), pady=10, fill="x", expand=True)
 
-        # Position: bottom-right
+        # Position: center of parent window
         self.update_idletasks()
         parent_root = parent.winfo_toplevel()
-        x = parent_root.winfo_x() + parent_root.winfo_width() - self.winfo_width() - 20
-        y = parent_root.winfo_y() + parent_root.winfo_height() - self.winfo_height() - 40
+        
+        # Lấy kích thước và vị trí của cửa sổ cha
+        p_width = parent_root.winfo_width()
+        p_height = parent_root.winfo_height()
+        p_x = parent_root.winfo_x()
+        p_y = parent_root.winfo_y()
+        
+        # Nếu cha chưa hiện hoặc quá nhỏ, lấy kích thước màn hình
+        if p_width < 100 or p_height < 100:
+            p_width = self.winfo_screenwidth()
+            p_height = self.winfo_screenheight()
+            p_x = 0
+            p_y = 0
+
+        # Căn giữa hiển thị Toast
+        x = p_x + (p_width - self.winfo_width()) // 2
+        y = p_y + (p_height - self.winfo_height()) // 2
+        
+        # Dịch lên một chút so với tâm chính xác cho đẹp hơn (~10%)
+        y = int(y - p_height * 0.1)
+        
         self.geometry(f"+{x}+{y}")
 
         # Auto-hide

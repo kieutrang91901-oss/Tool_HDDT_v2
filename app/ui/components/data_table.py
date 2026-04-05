@@ -83,7 +83,8 @@ class DataTable(tk.Frame):
             self.sheet.extra_bindings("cell_select", self._handle_select)
             self.sheet.extra_bindings("row_select", self._handle_select)
         if on_double_click:
-            self.sheet.extra_bindings("row_select", self._handle_double_click)
+            # Sửa lỗi: bind vào doubleclick thay vì row_select để tránh việc click cái ăn luôn
+            self.sheet.bind("<Double-Button-1>", self._handle_double_click)
         if on_right_click:
             self.sheet.extra_bindings("right_click_popup_menu", self._handle_right_click)
 

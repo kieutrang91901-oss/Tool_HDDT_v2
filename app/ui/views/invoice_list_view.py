@@ -38,9 +38,12 @@ class InvoiceListView(ctk.CTkFrame):
         self.main = main_window
         self.colors = colors
         self._invoices: List[InvoiceData] = []
+        self._visible_invoices: List[InvoiceData] = []  # Danh sách đang hiển thị (sau filter)
         self._summary_columns: List[dict] = []
         self._detail_columns: List[dict] = []
         self._current_tab = "summary"
+        self._last_summaries = []
+        self._cancel_flag = False  # ESC cancel flag
 
         self._init_columns()
         self._build_ui()
@@ -98,11 +101,14 @@ class InvoiceListView(ctk.CTkFrame):
         self._toolbar.add_button("query", "Tải bảng kê", icon="📥", command=self._show_query_menu, style="default")
         self._toolbar.add_button("download_xml", "Tải hóa đơn", icon="📄", command=self._download_selected_invoices, style="default")
         self._toolbar.add_separator()
-        self._toolbar.add_button("export_summary", "Export TH", icon="📤", command=self._export_summary)
-        self._toolbar.add_button("export_detail", "Export CT", icon="📤", command=self._export_detail)
+        self._toolbar.add_button("export", "Export", icon="📤", command=self._show_export_menu)
+        self._toolbar.add_button("view_inv", "View HĐ", icon="👁", command=self._view_selected_invoice)
         self._toolbar.add_separator()
         self._toolbar.add_button("columns", "Cột", icon="☰", command=self._open_column_chooser)
         self._toolbar.add_button("clear", "Xóa", command=self._clear_data)
+
+        # ESC to cancel
+        self.winfo_toplevel().bind("<Escape>", lambda e: self._cancel_operation())
 
         # ── Filter bar ───────────────────────────────
         filter_frame = ctk.CTkFrame(self, fg_color=c["bg_secondary"], height=44, corner_radius=0)
@@ -323,15 +329,22 @@ class InvoiceListView(ctk.CTkFrame):
         menu.after(100, lambda: menu.focus_set())
 
     def _do_query(self, loai_list: list):
-        """Tra cứu HĐ từ cổng thuế — cursor pagination + bao gồm HĐ MTT."""
+        """Tra cứu HĐ từ cổng thuế — cursor pagination + bao gồm HĐ MTT.
+        
+        Tab-aware:
+        - Tab Tổng Hợp: chỉ tải bảng kê summary (nhanh)
+        - Tab Chi Tiết: tải summary + detail items cho từng HĐ
+        """
+        self._cancel_flag = False  # Reset cancel
         self._show_loading("Đang tra cứu...")
         tu, den = self._date_picker.get_api_format()
+        need_detail = self._current_tab == "detail"
 
         def _query_thread():
             all_results = []
             seen_keys = set()
 
-            def _progress(count):
+            def _progress_summary(count):
                 self.after(0, lambda c=count:
                     self._loading.set_indeterminate(f"Đã tải {c} hóa đơn...")
                 )
@@ -339,7 +352,7 @@ class InvoiceListView(ctk.CTkFrame):
             for loai in loai_list:
                 # 1) HĐ bình thường (endpoint /query/)
                 normal = self.main.query_service.query_all_invoices(
-                    loai, tu, den, is_sco=False, progress_cb=_progress,
+                    loai, tu, den, is_sco=False, progress_cb=_progress_summary,
                 )
                 for inv in normal:
                     key = (inv.khhdon, inv.shdon)
@@ -347,7 +360,6 @@ class InvoiceListView(ctk.CTkFrame):
                         seen_keys.add(key)
                         all_results.append(inv)
 
-                # Cache
                 if normal:
                     self.main.query_service.cache_query_results(
                         self.main.auth_service.current_mst, normal
@@ -355,7 +367,7 @@ class InvoiceListView(ctk.CTkFrame):
 
                 # 2) HĐ máy tính tiền (endpoint /sco-query/)
                 sco = self.main.query_service.query_all_invoices(
-                    loai, tu, den, is_sco=True, progress_cb=_progress,
+                    loai, tu, den, is_sco=True, progress_cb=_progress_summary,
                 )
                 for inv in sco:
                     key = (inv.khhdon, inv.shdon)
@@ -369,16 +381,49 @@ class InvoiceListView(ctk.CTkFrame):
                     )
 
             logger.info(f"Query complete: {len(all_results)} unique invoices")
-            self.after(0, lambda: self._on_query_done(all_results))
+
+            # Nếu đang ở tab Chi Tiết → tải detail items
+            detail_map = {}
+            if need_detail and all_results:
+                self.after(0, lambda:
+                    self._loading.set_indeterminate(
+                        f"Đang tải chi tiết 0/{len(all_results)} HĐ..."
+                    )
+                )
+
+                def _progress_detail(done, total):
+                    self.after(0, lambda d=done, t=total:
+                        self._loading.set_indeterminate(
+                            f"Đang tải chi tiết {d}/{t} HĐ..."
+                        )
+                    )
+
+                detail_map = self.main.query_service.fetch_invoice_details(
+                    all_results, progress_cb=_progress_detail,
+                )
+
+            self.after(0, lambda: self._on_query_done(all_results, detail_map))
 
         threading.Thread(target=_query_thread, daemon=True).start()
 
-    def _on_query_done(self, results):
+    def _on_query_done(self, results, detail_map=None):
         self._hide_loading()
         count = len(results)
 
+        # Lưu cache summary để dùng lại khi switch tab
+        self._last_summaries = results
+
         if count > 0:
             converted = self._convert_summaries(results)
+
+            # Gắn chi tiết hàng hóa vào InvoiceData nếu có
+            if detail_map:
+                for inv in converted:
+                    key = f"{inv.ky_hieu}|{inv.so_hd}"
+                    items = detail_map.get(key, [])
+                    if items:
+                        inv.hang_hoa = items
+
             self._invoices = converted
             self._refresh_current_tab()
 
@@ -389,28 +434,41 @@ class InvoiceListView(ctk.CTkFrame):
     def _convert_summaries(summaries) -> List[InvoiceData]:
         """Convert list of InvoiceSummary → InvoiceData for table display.
         
-        Mapping theo cấu trúc bảng kê cổng thuế (19 cột).
-        Lưu ý: HĐ MTT không có tổng tiền phí và đơn vị tiền tệ.
+        Mapping theo De_Xuat_Bang_Du_Lieu.md.
         """
-        # Mapping trạng thái HĐ (tthai)
+        # Mapping trạng thái HĐ (tthai) — Mục 2 đề xuất
         tthai_labels = {
             "1": "Hóa đơn mới",
             "2": "Hóa đơn thay thế",
             "3": "Hóa đơn điều chỉnh",
-            "4": "Hóa đơn đã bị thay thế",
-            "5": "Hóa đơn đã bị điều chỉnh",
+            "4": "HĐ đã bị thay thế",
+            "5": "HĐ đã bị điều chỉnh",
             "6": "Hóa đơn đã hủy",
         }
-        # Mapping kết quả kiểm tra (ttxly)
+        # Mapping kết quả xử lý CQT (ttxly)
         ttxly_labels = {
             "5": "Đã cấp mã hóa đơn",
             "6": "CQT không cấp mã",
-            "8": "CQT đã nhận - không mã",
+            "8": "CQT đã nhận HĐ MTT",
+        }
+        # Nguồn tải API label
+        nguon_labels = {
+            "purchase": "HĐ mua vào",
+            "sold": "HĐ bán ra",
         }
 
         converted = []
         for s in summaries:
             raw = s.raw_data
+            tthai = str(raw.get("tthai", ""))
+            ttxly = str(raw.get("ttxly", ""))
+
+            # Nguồn tải: loại + trạng thái
+            loai_label = nguon_labels.get(s.loai_hd, s.loai_hd)
+            ttxly_label = ttxly_labels.get(ttxly, ttxly)
+            is_sco = "SCO" in s.nha_cung_cap if hasattr(s, 'nha_cung_cap') else False
+            nguon = f"{loai_label} - {'MTT' if ttxly == '8' else 'HĐĐT'} - {ttxly_label}"
+
             inv = InvoiceData(
                 ky_hieu=s.khhdon,
                 so_hd=s.shdon,
@@ -419,22 +477,19 @@ class InvoiceListView(ctk.CTkFrame):
                 ten_ban=s.ten_nban,
                 mst_mua=s.mst_nmua,
                 ten_mua=s.ten_nmua,
+                dia_chi_ban=str(raw.get("nbdchi", "")),
                 dia_chi_mua=str(raw.get("nmdchi", "")),
-                tong_chua_thue=s.tong_tien_cthue,
-                tong_thue=s.tong_tien_thue,
-                tong_ck_tm=str(raw.get("tgtcktmai", "")),
-                tong_thanh_toan_so=s.tong_thanh_toan,
-                don_vi_tien_te=str(raw.get("dvtte", "")),
-                ty_gia=str(raw.get("tgia", "")),
-                nha_cung_cap=f"API_{s.loai_hd.upper()}" if s.loai_hd else "API",
+                tong_chua_thue=str(raw.get("tgtcthue", "")),
+                tong_thue=str(raw.get("tgtthue", "")),
+                tong_thanh_toan_so=str(raw.get("tgtttbso", "")),
                 mau_so=str(raw.get("khmshdon", "1")),
+                nha_cung_cap=f"API_{s.loai_hd.upper()}" if s.loai_hd else "API",
             )
-            # Extra fields
-            tthai = str(raw.get("tthai", ""))
-            ttxly = str(raw.get("ttxly", ""))
-            inv.extras_header["trang_thai_label"] = tthai_labels.get(tthai, tthai)
-            inv.extras_header["kq_kiem_tra"] = ttxly_labels.get(ttxly, ttxly)
-            inv.extras_header["tong_phi"] = str(raw.get("tgtphi", ""))
+            # Extra fields for column mapping
+            inv.extras_header["id_hoa_don"] = str(raw.get("id", ""))
+            inv.extras_header["trang_thai"] = tthai_labels.get(tthai, tthai)
+            inv.extras_header["ttxly"] = ttxly_label
+            inv.extras_header["nguon_tai"] = nguon
             converted.append(inv)
         return converted
 
@@ -475,6 +530,7 @@ class InvoiceListView(ctk.CTkFrame):
             return
 
         total = len(invoices_to_dl)
+        self._cancel_flag = False
         self._show_loading(f"Đang tải 0/{total} hóa đơn...")
 
         account_mst = self.main.auth_service.current_mst
@@ -502,12 +558,17 @@ class InvoiceListView(ctk.CTkFrame):
             with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
                 futures = {}
                 for i, inv in enumerate(invoices_to_dl):
+                    if self._cancel_flag:
+                        break
                     future = executor.submit(_download_one, inv)
                     futures[future] = inv
                     if i < total - 1:
                         time.sleep(0.15)
                 
                 for future in as_completed(futures):
+                    if self._cancel_flag:
+                        executor.shutdown(wait=False, cancel_futures=True)
+                        break
                     inv, result = future.result()
                     done_count += 1
                     
@@ -648,6 +709,153 @@ class InvoiceListView(ctk.CTkFrame):
     # ═══════════════════════════════════════════════════════
     # EXPORT
     # ═══════════════════════════════════════════════════════
+
+    def _show_export_menu(self):
+        """Dropdown menu: Export TH / CT / TH+CT."""
+        btn = self._toolbar.get_button("export")
+        if not btn:
+            return
+        menu = tk.Menu(self.winfo_toplevel(), tearoff=0,
+                       bg=self.colors["bg_secondary"], fg=self.colors["text_primary"],
+                       font=("Segoe UI", 11))
+        menu.add_command(label="📊 Export Tổng Hợp", command=self._export_summary)
+        menu.add_command(label="📋 Export Chi Tiết", command=self._export_detail)
+        menu.add_separator()
+        menu.add_command(label="📦 Export TH + CT", command=self._export_both)
+        x = btn.winfo_rootx()
+        y = btn.winfo_rooty() + btn.winfo_height()
+        menu.post(x, y)
+        menu.after(100, lambda: menu.focus_set())
+
+    def _export_both(self):
+        """Export cả tổng hợp và chi tiết vào 2 sheet trong 1 file."""
+        if not self._invoices:
+            show_toast(self.main, "Không có dữ liệu để export", "warning")
+            return
+        path = filedialog.asksaveasfilename(
+            defaultextension=".xlsx",
+            filetypes=[("Excel files", "*.xlsx")],
+            initialfile="HDDT_TongHop_ChiTiet.xlsx",
+        )
+        if not path:
+            return
+
+        s_cols = [ColumnConfig(column_key=c["key"], display_name=c["name"], format_type=c["format"], width=c["width"])
+                  for c in self._get_visible_columns("summary")]
+        d_cols = [ColumnConfig(column_key=c["key"], display_name=c["name"], format_type=c["format"], width=c["width"])
+                  for c in self._get_visible_columns("detail")]
+
+        result = self.main.excel_service.export_detail(self._invoices, path, s_cols, d_cols)
+        if result["success"]:
+            show_toast(self.main, f"Đã export TH+CT: {result['row_count']} dòng", "success")
+            os.startfile(path)
+        else:
+            show_toast(self.main, f"Lỗi export: {result['error_msg']}", "error")
+
+    def _view_selected_invoice(self):
+        """View trực quan hóa đơn (qua trình duyệt web)."""
+        try:
+            import zipfile
+            import shutil
+            import webbrowser
+
+            rows = self._summary_table.get_selected_rows()
+            if not rows:
+                show_toast(self.main, "Vui lòng chọn 1 hóa đơn trong danh sách", "info")
+                return
+            target = self._visible_invoices if self._visible_invoices else self._invoices
+            row_idx = rows[0]
+            if not (0 <= row_idx < len(target)):
+                return
+            inv = target[row_idx]
+
+            def get_html_from_folder(folder_path):
+                if not os.path.exists(folder_path):
+                    return None
+                for root, _, files in os.walk(folder_path):
+                    for file in files:
+                        logger.info(f"Checking file for visual view: {file}")
+                        if file.lower().endswith('.html') and 'invoice' in file.lower():
+                            return os.path.join(root, file)
+                        if file.lower() == 'invoice.html':
+                            return os.path.join(root, file)
+                return None
+
+            def _open_visual(path):
+                try:
+                    html_file = None
+                    if path and path.lower().endswith(".zip"):
+                        temp_dir = os.path.join(self.main.query_service._download_base, "temp_view", f"{inv.ky_hieu}_{inv.so_hd}")
+                        os.makedirs(temp_dir, exist_ok=True)
+                        with zipfile.ZipFile(path, 'r') as zip_ref:
+                            zip_ref.extractall(temp_dir)
+                        html_file = get_html_from_folder(temp_dir)
+                        if not html_file:
+                            show_toast(self.main, "Không tìm thấy file HTML chứa giao diện hiển thị trong gói ZIP tải về", "error")
+                    elif path and os.path.isdir(path):
+                        html_file = get_html_from_folder(path)
+                        if not html_file:
+                            show_toast(self.main, "Không tìm thấy file giao diện HTML trong thư mục import", "error")
+                    elif path and path.lower().endswith(".xml"):
+                        html_file = get_html_from_folder(os.path.dirname(path))
+                        if not html_file:
+                            show_toast(self.main, "Không tìm thấy file giao diện HTML đi kèm hóa đơn (do chưa có file gốc tải về)", "error")
+                    else:
+                        show_toast(self.main, f"Định dạng file ({path}) không được hỗ trợ mở trình duyệt", "error")
+
+                    if html_file:
+                        try:
+                            # Ưu tiên ưu dùng os.startfile trên Windows vì nó gọi trực tiếp ứng dụng mặc định
+                            os.startfile(html_file)
+                        except Exception as e1:
+                            logger.error(f"os.startfile error: {e1}")
+                            # Dự phòng
+                            webbrowser.open_new_tab(f"file:///{os.path.abspath(html_file).replace(os.path.sep, '/')}")
+                except Exception as e:
+                    logger.error(f"Lỗi mở giao diện: {e}", exc_info=True)
+                    show_toast(self.main, f"Có lỗi xảy ra khi tạo giao diện review tĩnh: {e}", "error")
+
+            xml_path = getattr(inv, "xml_path", None)
+            if not xml_path:
+                xml_path = getattr(inv, "file_path", None)
+
+            if xml_path and os.path.exists(xml_path):
+                _open_visual(xml_path)
+            else:
+                self._show_loading("Đang yêu cầu bản tin trực quan từ Thuế...")
+                def _dl_and_view():
+                    try:
+                        mst = self.main.auth_service.current_mst
+                        res = self.main.query_service.download_xml(
+                            nbmst=inv.mst_ban,
+                            khhdon=inv.ky_hieu,
+                            shdon=inv.so_hd,
+                            account_mst=mst,
+                            khmshdon=inv.mau_so or "1",
+                        )
+                        self.after(0, self._hide_loading)
+                        if res.success and res.file_path:
+                            inv.xml_path = res.file_path
+                            self.after(0, lambda: _open_visual(res.file_path))
+                        else:
+                            import urllib.parse
+                            err = urllib.parse.unquote(res.error_msg) if res.error_msg else "Lỗi không rõ từ Cổng Thuế"
+                            self.after(0, lambda: show_toast(self.main, f"Thuế từ chối trả về giao diện gốc: {err}", "warning"))
+                    except Exception as e:
+                        logger.error(f"Error in _dl_and_view: {e}", exc_info=True)
+                        self.after(0, self._hide_loading)
+                        self.after(0, lambda e=e: show_toast(self.main, f"Lỗi tải XML: {e}", "error"))
+
+                threading.Thread(target=_dl_and_view, daemon=True).start()
+        except Exception as e:
+            logger.error(f"Critical error in _view_selected_invoice: {e}")
+            show_toast(self.main, f"Lỗi chức năng: {e}", "error")
+
+    def _cancel_operation(self):
+        """ESC — dừng tất cả lệnh đang chạy."""
+        self._cancel_flag = True
+        self._hide_loading()
+        show_toast(self.main, "Đã hủy thao tác", "info")
 
     def _export_summary(self):
         if not self._invoices:
@@ -838,6 +1046,7 @@ class InvoiceListView(ctk.CTkFrame):
 
     def _refresh_summary_table(self):
         """Refresh bảng tổng hợp."""
+        self._visible_invoices = list(self._invoices)  # Track visible
         visible = self._get_visible_columns("summary")
         rows = []
         for idx, inv in enumerate(self._invoices, 1):
@@ -849,10 +1058,10 @@ class InvoiceListView(ctk.CTkFrame):
         self._tab_info.configure(text=f"{len(self._invoices)} hóa đơn")
 
     def _get_summary_value(self, inv: InvoiceData, key: str, idx: int):
-        """Lấy giá trị 1 ô bảng tổng hợp theo column key (19 cột cổng thuế)."""
+        """Lấy giá trị 1 ô bảng tổng hợp — theo De_Xuat_Bang_Du_Lieu."""
         mapping = {
             "stt": idx,
-            "mau_so": inv.mau_so,
+            # Cột bắt buộc
             "ky_hieu": inv.ky_hieu,
             "so_hd": inv.so_hd,
             "ngay_lap": inv.ngay_lap,
@@ -860,26 +1069,22 @@ class InvoiceListView(ctk.CTkFrame):
             "ten_ban": inv.ten_ban,
             "mst_mua": inv.mst_mua,
             "ten_mua": inv.ten_mua,
+            "tong_thanh_toan": inv.tong_thanh_toan_so,
+            "trang_thai": inv.extras_header.get("trang_thai", ""),
+            "ttxly": inv.extras_header.get("ttxly", ""),
+            # Cột tùy chọn
+            "id_hoa_don": inv.extras_header.get("id_hoa_don", ""),
+            "nguon_tai": inv.extras_header.get("nguon_tai", ""),
+            "dia_chi_ban": inv.dia_chi_ban,
             "dia_chi_mua": inv.dia_chi_mua,
             "tong_chua_thue": inv.tong_chua_thue,
             "tong_thue": inv.tong_thue,
-            "tong_ck_tm": inv.tong_ck_tm,
-            "tong_phi": inv.extras_header.get("tong_phi", ""),
-            "tong_thanh_toan": inv.tong_thanh_toan_so,
-            "don_vi_tien_te": inv.don_vi_tien_te,
-            "ty_gia": inv.ty_gia,
-            "trang_thai": inv.extras_header.get("trang_thai_label", ""),
-            "kq_kiem_tra": inv.extras_header.get("kq_kiem_tra", ""),
+            "mau_so": inv.mau_so,
         }
         if key in mapping:
             return mapping[key]
-        # Dynamic extras
-        from config.column_config import parse_dynamic_column_key
-        scope, fkey = parse_dynamic_column_key(key)
-        extras_map = {"header": inv.extras_header, "seller": inv.extras_seller,
-                      "buyer": inv.extras_buyer, "payment": inv.extras_payment,
-                      "invoice": inv.extras_invoice}
-        return extras_map.get(scope, {}).get(fkey, "")
+        # Dynamic extras fallback
+        return inv.extras_header.get(key, "")
 
     # ═══════════════════════════════════════════════════════
     # TABLE DATA — DETAIL (hàng hóa)
@@ -950,6 +1155,7 @@ class InvoiceListView(ctk.CTkFrame):
             self._show_filtered_detail(filtered)
 
     def _show_filtered_summary(self, invoices):
+        self._visible_invoices = invoices  # Track filtered list
         visible = self._get_visible_columns("summary")
         rows = []
         for idx, inv in enumerate(invoices, 1):
@@ -974,17 +1180,18 @@ class InvoiceListView(ctk.CTkFrame):
     # ═══════════════════════════════════════════════════════
 
     def _on_row_select(self, row_idx: int):
-        pass  # Placeholder
+        pass
 
     def _on_row_double_click(self, row_idx: int):
-        """Mở Invoice Detail View."""
-        if 0 <= row_idx < len(self._invoices):
-            inv = self._invoices[row_idx]
+        """Mở Invoice Detail View — dùng _visible_invoices để tránh lệch index khi search."""
+        target = self._visible_invoices if self._visible_invoices else self._invoices
+        if 0 <= row_idx < len(target):
+            inv = target[row_idx]
             from app.ui.views.invoice_detail_view import InvoiceDetailView
             InvoiceDetailView(self, inv, self.main)
 
     def _on_detail_row_select(self, row_idx: int):
-        pass  # Placeholder
+        pass
 
     # ═══════════════════════════════════════════════════════
     # HELPERS

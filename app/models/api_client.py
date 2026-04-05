@@ -390,6 +390,53 @@ class APIClient:
         logger.error(f"Download failed after {max_retries} retries: {khhdon}-{shdon}")
         return None
     
+    def get_invoice_detail(
+        self,
+        nbmst: str,
+        khhdon: str,
+        shdon: str,
+        khmshdon: str = "1",
+        is_sco: bool = False,
+    ) -> Dict[str, Any]:
+        """Lấy chi tiết 1 hóa đơn (bao gồm hdhhdvu items).
+        
+        Args:
+            nbmst: MST người bán
+            khhdon: Ký hiệu HĐ
+            shdon: Số HĐ
+            khmshdon: Ký hiệu mẫu số HĐ
+            is_sco: True nếu HĐ máy tính tiền
+            
+        Returns:
+            Dict: full invoice data including hdhhdvu[], or {"error": "..."}
+        """
+        try:
+            url = API.get_invoice_url(API.EP_INVOICE_DETAIL, is_sco=is_sco)
+            params = {
+                "nbmst": nbmst,
+                "khhdon": khhdon,
+                "shdon": str(shdon),
+                "khmshdon": str(khmshdon),
+            }
+            
+            resp = self.client.get(
+                url,
+                params=params,
+                headers=self._get_auth_headers(),
+            )
+            
+            if resp.status_code == 200:
+                return resp.json()
+            elif resp.status_code == 401:
+                self._token = ""
+                return {"error": "Session hết hạn"}
+            else:
+                return {"error": f"HTTP {resp.status_code}"}
+        
+        except Exception as e:
+            logger.error(f"Invoice detail error {khhdon}-{shdon}: {e}")
+            return {"error": str(e)}
+    
     def export_excel(
         self,
         tu_ngay: str,

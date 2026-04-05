@@ -37,6 +37,10 @@ class InvoiceDetailView(ctk.CTkToplevel):
 
         self._build_ui()
         self._center()
+        
+        # Thoát khi ấn ESC
+        self.bind("<Escape>", lambda e: self.destroy())
+        self.focus_set()
 
     def _build_ui(self):
         c = self.colors

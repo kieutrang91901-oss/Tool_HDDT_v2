@@ -165,9 +165,97 @@ class InvoiceQueryService:
         logger.info(f"query_all {prefix}{loai}: {len(all_results)} unique invoices")
         return all_results
     
+    # ═══════════════════════════════════════════════════════
+    # TẢI CHI TIẾT HÀNG HÓA (hdhhdvu) — Mục 3 đề xuất
+    # ═══════════════════════════════════════════════════════
+
+    def fetch_invoice_details(
+        self,
+        summaries: List[InvoiceSummary],
+        progress_cb=None,
+    ) -> Dict[str, List]:
+        """Batch fetch detail (hdhhdvu items) cho từng HĐ.
+        
+        Dùng sequential + 0.3s delay để tránh rate limit.
+        
+        Args:
+            summaries: List InvoiceSummary đã query
+            progress_cb: callback(done, total) cập nhật tiến trình
+            
+        Returns:
+            Dict[key -> list of HangHoa items]
+            key = "khhdon|shdon"
+        """
+        import time
+        from app.models.entities import HangHoa
+        
+        results = {}
+        total = len(summaries)
+        
+        # Mapping tính chất
+        tchat_labels = {
+            "1": "Hàng hóa, DV",
+            "2": "Khuyến mại",
+            "3": "Chiết khấu TM",
+            "4": "Ghi chú",
+            "5": "Bổ sung",
+        }
+        
+        for i, inv in enumerate(summaries):
+            key = f"{inv.khhdon}|{inv.shdon}"
+            
+            if i > 0:
+                time.sleep(0.3)
+            
+            # Detect SCO
+            ttxly = str(inv.raw_data.get("ttxly", ""))
+            is_sco = ttxly == "8"
+            
+            detail = self._api.get_invoice_detail(
+                nbmst=inv.mst_nban,
+                khhdon=inv.khhdon,
+                shdon=inv.shdon,
+                khmshdon=str(inv.raw_data.get("khmshdon", "1")),
+                is_sco=is_sco,
+            )
+            
+            items = []
+            if "error" not in detail:
+                for hh_raw in detail.get("hdhhdvu", []):
+                    tchat_code = str(hh_raw.get("tchat", ""))
+                    tsuat_raw = hh_raw.get("tsuat", hh_raw.get("ltsuat", ""))
+                    
+                    hh = HangHoa(
+                        stt=str(hh_raw.get("stt", "")),
+                        tinh_chat_ma=tchat_code,
+                        tinh_chat=tchat_labels.get(tchat_code, tchat_code),
+                        ten_hang=str(hh_raw.get("ten", "")),
+                        don_vi_tinh=str(hh_raw.get("dvtinh", "")),
+                        so_luong=str(hh_raw.get("sluong", "")),
+                        don_gia=str(hh_raw.get("dgia", "")),
+                        thue_suat=str(tsuat_raw) if tsuat_raw else "",
+                        thanh_tien=str(hh_raw.get("thtien", "")),
+                        so_tien_ck=str(hh_raw.get("stckhau", "")),
+                    )
+                    # Extra: tiền thuế dòng
+                    tthue = hh_raw.get("thtcthue", "")
+                    if tthue:
+                        hh.extras["tien_thue"] = str(tthue)
+                    items.append(hh)
+            else:
+                logger.warning(f"Detail fetch failed: {key} - {detail.get('error','')}")
+            
+            results[key] = items
+            
+            if progress_cb:
+                progress_cb(i + 1, total)
+        
+        ok_count = sum(1 for v in results.values() if v)
+        logger.info(f"Detail fetch: {ok_count}/{total} OK")
+        return results
+    
     def _parse_api_item(self, item: Dict, loai: str) -> InvoiceSummary:
         """Parse 1 item từ API response thành InvoiceSummary."""
-        # Mapping trạng thái
         ttxly = str(item.get("ttxly", ""))
         ttxly_labels = {
             "5": "Đã cấp mã",
@@ -275,15 +363,11 @@ class InvoiceQueryService:
             if content is None:
                 return DownloadResult(error_msg="Không tải được file XML")
             
-            # Lưu file ZIP
+            # Lưu file ZIP (không giải nén theo yêu cầu)
             file_name = f"{khhdon}_{shdon}.zip"
             file_path = os.path.join(dest_folder, file_name)
             with open(file_path, "wb") as f:
                 f.write(content)
-            
-            # Giải nén
-            xml_files = FileHandler.extract_zip(file_path)
-            xml_path = xml_files[0] if xml_files else file_path
             
             # Cập nhật DB
             if account_mst:
@@ -293,10 +377,10 @@ class InvoiceQueryService:
                     "ky_hieu": khhdon,
                     "so_hd": shdon,
                     "mst_ban": nbmst,
-                    "xml_path": xml_path,
+                    "xml_path": file_path,
                 })
             
-            return DownloadResult(success=True, file_path=xml_path)
+            return DownloadResult(success=True, file_path=file_path)
             
         except Exception as e:
             logger.error(f"Download error {khhdon}-{shdon}: {e}")
